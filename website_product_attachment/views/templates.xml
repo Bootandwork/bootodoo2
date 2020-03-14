@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<template id="product_attachement" inherit_id="website_sale.product" customize_show="True" name="Product Attachments">
+<xpath expr="//form//a[@id='add_to_cart']" position="after">
+<t t-if="website.get_product_attachements(product.id)">
+<div class="download-attachment">
+	<hr/>
+	<h4><b>Attachments</b></h4>
+	<t t-foreach="website.get_product_attachements(product.id)" t-as="attachment">
+		<t t-if="attachment">
+		<table border="0">
+		<t t-foreach="attachment" t-as="download">
+		    <tr>
+			 <td>
+				<a t-att-href="'/web/content?model=ir.attachment&amp;field=datas&amp;id=%s&amp;download=true' % download.id "><i class="fa font-icons-icon fa-download"/>
+			   </a>
+			 </td>
+			 <td style="padding-left:10px;">
+			 	<a t-att-href="'/web/content?model=ir.attachment&amp;field=datas&amp;id=%s&amp;download=true' % download.id "><span t-field="download.name"/>
+			 </a>
+			 </td>
+			</tr>
+		</t>
+		</table>
+		
+		</t>
+	</t>
+	</div>
+</t>
+</xpath>
+</template>
+</odoo>
