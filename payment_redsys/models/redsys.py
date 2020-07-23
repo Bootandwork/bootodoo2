@@ -110,7 +110,8 @@ class AcquirerRedsys(models.Model):
     @api.model
     def _get_website_url(self):
         website_id = self.env.context.get('website_id', False)
-        if website_id:
+        # VB if website_id:
+        if False:
             base_url = '%s://%s' % (
                 http.request.httprequest.environ['wsgi.url_scheme'],
                 self.env['website'].browse(website_id).domain
