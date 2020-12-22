@@ -27,3 +27,8 @@
 	path = OCA/queue
 	url = git@github.com:OCA/queue.git
 	branch = 13.0
+
+[submodule "OCA/account-invoicing"]
+	path = OCA/account-invoicing
+	url = git@github.com:OCA/account-invoicing.git
+	branch = 13.0
