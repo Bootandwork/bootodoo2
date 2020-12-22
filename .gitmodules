@@ -52,3 +52,8 @@
 	path = OCA/server-ux
 	url = git@github.com:OCA/server-ux.git
 	branch = 13.0
+
+[submodule "Aselcis-Consulting/bootandwork"]
+	path = Aselcis-Consulting/bootandwork
+	url = git@github.com:Aselcis-Consulting/bootandwork.git
+	branch = 13.0
