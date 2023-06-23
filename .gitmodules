@@ -67,3 +67,8 @@
 	path = OCA/social
 	url = git@github.com:OCA/social.git
 	branch = 13.0
+
+[submodule "Aselcis-Consulting/oca_no_merge"]
+	path = Aselcis-Consulting/oca_no_merge
+	url = git@github.com:Aselcis-Consulting/oca_no_merge.git
+	branch = 13.0
