@@ -42,3 +42,13 @@
 	path = OCA/reporting-engine
 	url = git@github.com:OCA/reporting-engine.git
 	branch = 16.0
+
+[submodule "OCA/bank-payment"]
+	path = OCA/bank-payment
+	url = git@github.com:OCA/bank-payment.git
+	branch = 16.0
+
+[submodule "OCA/product-attribute"]
+	path = OCA/product-attribute
+	url = git@github.com:OCA/product-attribute.git
+	branch = 16.0
