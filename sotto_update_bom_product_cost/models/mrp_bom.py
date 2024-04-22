@@ -23,7 +23,7 @@ class MrpBom(models.Model):
             if rec.product_id:
                 rec.product_id.button_bom_cost()
 
-class Product(models.Model):
+class ProductProduct(models.Model):
     _inherit="product.product"
 
     def update_bom_product_cost(self):
@@ -46,7 +46,7 @@ class Product(models.Model):
                     if rec.product_id:
                         rec.product_id.button_bom_cost()
 
-class Product(models.Model):
+class ProductTemplate(models.Model):
     _inherit="product.template"
 
     def update_bom_product_cost(self):
