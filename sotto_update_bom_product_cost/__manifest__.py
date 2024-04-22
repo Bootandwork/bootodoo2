@@ -10,7 +10,7 @@
         Update BOM Product Cost automatically when a bill of material is created or updated. Auto Update BOM Product Cost,Auto Update Cost,Update cost,Update Product Cost,update cost from bom
     """,
     'images': ["static/description/img_1.png"],
-    'depends': ['base_setup','sale_margin','mrp'],
+    'depends': ['base_setup','sale_margin','mrp','product'],
     'data': [],
     'installable': True,
     'auto_install': False,
