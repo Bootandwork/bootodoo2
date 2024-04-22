@@ -46,6 +46,29 @@ class Product(models.Model):
                     if rec.product_id:
                         rec.product_id.button_bom_cost()
 
+class Product(models.Model):
+    _inherit="product.template"
+
+    def update_bom_product_cost(self):
+        for product in self:
+            if product.bom_ids:
+                for rec in product.bom_ids:
+                    temp_list=[]
+                    if rec.bom_line_ids:
+                        for first_bom in rec.bom_line_ids:
+                            temp_list.append(first_bom.product_tmpl_id)
+                        for record in temp_list:
+                            bom=self.env['mrp.bom'].search([('product_tmpl_id','=',record.id)],limit=1)
+                            if bom.bom_line_ids:
+                                for record in bom.bom_line_ids:
+                                    temp_list.append(record.product_tmpl_id)
+                    if temp_list:
+                        for cost_update in reversed(temp_list):
+                            cost_update.button_bom_cost()
+                    rec.product_tmpl_id.button_bom_cost()
+                    if rec.product_id:
+                        rec.product_id.button_bom_cost()
+
     """
     @api.model
     def create(self,vals):
