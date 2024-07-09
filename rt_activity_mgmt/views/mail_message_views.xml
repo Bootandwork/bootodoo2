@@ -1,0 +1,393 @@
+<?xml version="1.0"?>
+<odoo>
+    <data>
+        <!-- mail.message tree: short view !-->
+        <record model="ir.ui.view" id="view_message_tree">
+            <field name="name">mail.message.tree</field>
+            <field name="model">mail.message</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <tree string="Messages" create='false' edit='false' delete="false">
+                    <field name="date" string="Date of Done" />
+                    <field name="subject" />
+                    <field name="author_id" string="Done by" />
+                    <field name="mail_activity_type_id" />
+                    <field name="model" string="Document Model" />
+                    <field name="record_name" string="Document Name" />
+                    <field name="res_id" invisible="1" />
+                    <button name="action_open_document" type="object" icon="fa-file-text-o"
+                        string="Open Document"
+                        attrs="{'invisible': [('res_id', 'in', (0, False, ''))]}" />
+
+                </tree>
+            </field>
+        </record>
+
+        <!-- mail.message form: short view !-->
+        <record id="mail_message_view_form" model="ir.ui.view">
+            <field name="name">mail.message.view.form</field>
+            <field name="model">mail.message</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <form string="Message" duplicate="0" create='false' edit='false' delete="false">
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_open_document" string="Open Document"
+                                type="object" class="oe_link" icon="fa-file-text-o"
+                                attrs="{'invisible': ['|', ('model', '=', False), ('res_id', '=', 0)]}" />
+                        </div>
+                        <group>
+                            <group>
+                                <field name="subject" />
+
+
+                                <field name="date" string="Date of Done" />
+                                <!-- <field name="email_from" /> -->
+                                <field name="author_id" string="Done by" />
+                                <field name="mail_activity_type_id" />
+                                <!-- <field name="message_type" />
+                                <field name="subtype_id" />
+                                <field name="is_internal" /> -->
+                            </group>
+                            <group>
+                                <field name="model" string="Document Model" />
+                                <field name="res_id" invisible="1" />
+                                <field name="record_name" string="Document Name" />
+                                <!-- <field name="parent_id" /> -->
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="Body" name="body">
+                                <field name="body" options="{'style-inline': true}" />
+                            </page>
+                            <page
+                                name="attachments"
+                                string="Attachments"
+                                attrs="{'invisible':[('attachment_ids', '=', [])]}"
+                            >
+
+                                <div>
+                                    <group col="4">
+                                        <field name="attachment_ids" widget="many2many_binary"
+                                            string="Attach a file" nolabel="1" colspan="4" />
+                                    </group>
+                                </div>
+
+
+                            </page>
+
+                            <!-- <page string="Gateway" name="gateway">
+                                <group>
+                                    <group>
+                                        <field name="reply_to"/>
+                                        <field name="reply_to_force_new"/>
+                                    </group>
+                                    <group>
+                                        <field name="message_id"/>
+                                        <field name="mail_server_id"/>
+                                    </group>
+                                </group>
+                            </page>
+                            <page string="Recipients" name="recipients">
+                                <group>
+                                    <group>
+                                        <field name="partner_ids" widget="many2many_tags"/>
+                                    </group>
+                                    <group>
+                                        <field name="notified_partner_ids" widget="many2many_tags"/>
+                                        <field name="starred_partner_ids" widget="many2many_tags"/>
+                                    </group>
+                                </group>
+                                <group>
+                                    <field name="notification_ids">
+                                        <tree>
+                                            <field name="res_partner_id"/>
+                                            <field name="is_read"/>
+                                            <field name="notification_type"/>
+                                            <field name="notification_status"/>
+                                        </tree>
+                                    </field>
+                                </group>
+                            </page>
+                            <page string="Tracking" name="page_tracking">
+                                <field name="tracking_value_ids"/>
+                            </page> -->
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- mail.message search: wall view !-->
+        <record model="ir.ui.view" id="view_message_search">
+            <field name="name">mail.message.search</field>
+            <field name="model">mail.message</field>
+            <field name="priority">1000</field>
+            <field name="arch" type="xml">
+                <search string="Messages Search">
+                    <field name="body" string="Content"
+                        filter_domain="['|', ('subject', 'ilike', self), ('body', 'ilike', self)]" />
+                    <field name="subject" />
+                    <!-- <field name="message_type" /> -->
+                    <field name="author_id" string="Done by" />
+                    <field name="mail_activity_type_id" />
+                    <!-- <field name="partner_ids" /> -->
+                    <field name="model" />
+                    <field name="res_id" />
+                    <field name="parent_id" />
+
+                    <field name="attachment_ids"
+                        filter_domain="[('attachment_ids.index_content', 'ilike', self)]"
+                        string="Attachments" />
+
+                    <field name="date" string="Date of Done" />
+
+                    <!-- Date of Done filter -->
+
+
+                    <filter name="filter_by_date_today" string="Date of Done: Today"
+                        domain="[('date', '&gt;', (context_today() - datetime.timedelta(days=1)).strftime('%Y-%m-%d'))]"
+                    />
+
+
+                    <filter string="Date of Done: This Week" name="filter_by_date_this_week"
+                        domain="[
+                ('date', '>=', (datetime.datetime.combine(context_today() + relativedelta(weeks=-1,days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S')),
+                ('date', '&lt;', (datetime.datetime.combine(context_today() + relativedelta(days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S'))]" />
+
+
+                    <filter name="filter_by_date_this_month" string="Date of Done: This Month"
+                        domain="[('date', '&gt;=', (context_today()).strftime('%Y-%m-01'))]" />
+
+
+                    <filter name="filter_by_date_this_year" invisible="1"
+                        string="Date of Done: This Year"
+                        domain="[('date', '&lt;', (context_today() + relativedelta(years=1, month=1, day=1)).strftime('%Y-%m-%d')), ('date', '&gt;=', (context_today() + relativedelta(month=1, day=1)).strftime('%Y-%m-%d'))]" />
+
+                    <separator />
+
+                    <filter string="Date of Done" date="date" name="filter_by_date" />
+
+                    <filter string="Last 7 days" invisible="1" name="filter_by_date_last_7_days"
+                        domain="[('date','&gt;=', (context_today() - datetime.timedelta(days=7)).strftime('%Y-%m-%d'))]" />
+                    <filter string="Last 30 days" invisible="1" name="filter_by_date_last_30_days"
+                        domain="[('date','&gt;=', (context_today() - datetime.timedelta(days=30)).strftime('%Y-%m-%d'))]" />
+                    <filter string="Last 365 days" invisible="1" name="filter_by_date_last_365_days"
+                        domain="[('date','&gt;=', (context_today() - datetime.timedelta(days=365)).strftime('%Y-%m-%d'))]" />
+
+
+                    <group expand="0" string="Group By">
+                        <filter string="Date of Done" name="group_by_date" domain="[]"
+                            context="{'group_by': 'date'}" />
+                        <filter string="Done by" name="group_by_author_id" domain="[]"
+                            context="{'group_by': 'author_id'}" />
+                        <filter string="Document Model" name="groupby_model"
+                            context="{'group_by': 'model'}" />
+                        <filter string="Document Name" name="groupby_record_name"
+                            context="{'group_by': 'record_name'}" />
+
+                    </group>
+                    <!-- <filter string="Has Mentions"
+                        name="filter_has_mentions"
+                        domain="[('partner_ids.user_ids', 'in', [uid])]" />
+                    <separator />
+                    <filter string="Need Action"
+                        name="message_needaction" help="Unread messages"
+                        domain="[('needaction', '=', True)]" /> -->
+                    <separator />
+                </search>
+            </field>
+        </record>
+
+        <!-- <record id="action_view_mail_message" model="ir.actions.act_window">
+            <field name="name">Messages</field>
+            <field name="res_model">mail.message</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="view_message_search" />
+        </record> -->
+
+
+
+
+
+
+
+        <!-- mail.message kanban !-->
+        <record id="view_message_kanban" model="ir.ui.view">
+            <field name="name">mail.message.kanban</field>
+            <field name="model">mail.message</field>
+            <field name="priority">1000</field>   
+            <field name="arch" type="xml">
+                <kanban duplicate="0" create='false' edit='false' delete="false" class="o_kanban_small_column">
+            
+                    <field name="date" string="Date of Done" />
+                    <field name="subject" />
+                    <field name="author_id" string="Done by" />
+                    <field name="mail_activity_type_id" />
+                    <field name="model" string="Document Model" />
+                    <field name="record_name" string="Document Name" />
+                    <field name="res_id"/>
+    
+                    <templates>
+                        <t t-name="kanban-box">                     
+                            <div class="oe_kanban_global_click oe_kanban_card d-flex flex-column">
+                                <div class="oe_kanban_content flex-grow-1">
+                                    <div class="oe_kanban_details">
+                                        <strong class="o_kanban_record_title"><field name="subject"/></strong>
+                                    </div>
+                                    <div class="o_kanban_record_subtitle">
+                                    </div>
+    
+                                    <div>
+                                        <strong>Date of Done: </strong>
+                                        <span>
+                                            <field name="date" />
+                                            <span class="ms-2">
+                                                <field name="date" widget="remaining_days"  />
+                                            </span>
+
+                                        </span>
+                                    </div>
+    
+                                    <div>
+                                        <strong>Done by: </strong>
+                                        <span>
+                                            <field name="author_id" />
+                                            <span class="ms-2">
+                                                <field name="author_id"  />
+                                            </span>
+                                        </span>
+                                    </div>
+
+                                    <div>
+                                        <strong>Mail Activity Type: </strong>
+                                        <span>
+                                            <field name="mail_activity_type_id" />
+                                        </span>
+                                    </div>
+                                    
+                                    
+                                    <div>
+                                        <strong>Document Model: </strong>
+                                        <span>
+                                            <field name="model" />
+                                        </span>
+                                    </div>
+    
+                                    <div>
+                                        <strong>Document Name: </strong>
+                                        <span>
+                                            <field name="record_name" />
+                                        </span>
+                                    </div>
+                                </div>
+    
+    
+                                <div class="oe_kanban_footer">
+                                    <div class="o_kanban_record_bottom mt-1">
+                                        <div class="oe_kanban_bottom_left">
+                                            <a role="button" style="padding: 0rem 0rem;"
+                                                name="action_open_document"
+                                                type="object" class="btn text-primary">
+                                                <span title="Document">
+                                                    <i class="fa fa-file-text" role="img"
+                                                        aria-label="Document" /> Document </span>
+                                            </a>                                    </div>
+                                        <!-- <div class="oe_kanban_bottom_right">
+                                        </div> -->
+                                    </div>
+                                </div>
+    
+                                <div class="clearfix"/>
+                            </div>
+                        </t>
+                    </templates>
+    
+                </kanban>
+            </field>
+        </record>
+
+
+
+        <record id="view_message_calendar" model="ir.ui.view">
+            <field name="name">mail.message.calendar</field>            
+            <field name="model">mail.message</field>
+            <field name="priority">1000</field>   
+            <field name="arch" type="xml">
+                <calendar  
+                string="Messages"
+                create="0"  delete="0" mode="month" 
+                date_start="date" color="author_id" 
+                hide_time="true"
+                event_limit="5" quick_add="0">
+                    <field name="date"  string="Date of Done"  />
+                    <field name="subject" />
+                    <field name="author_id" string="Done by" avatar_field="image_128" filters="1" />
+                    <field name="mail_activity_type_id" />
+                    <field name="create_date" />
+                    <field name="model" filters="1" />
+                    <field name="record_name" />
+                </calendar>
+            </field>
+        </record>
+
+
+
+        <record id="view_message_pivot" model="ir.ui.view">
+            <field name="name">mail.message.pivot</field>            
+            <field name="model">mail.message</field>
+            <field name="priority">1000</field>   
+            <field name="arch" type="xml">
+                <pivot  string="Messages">
+                    <field name="mail_activity_type_id" type="col" />
+                    <field name="date" string="Date of Done"  interval="month" type="row" />
+                    <!-- <field name="author_id" string="Done by" type="row" /> -->
+                    
+                    
+                    <!-- <field name="date" string="Date of Done" type="col" interval="month" />
+                    <field name="mail_activity_type_id" type="col" />
+                    <field name="author_id" string="Done by" type="row" />
+
+                     -->
+                </pivot>
+            </field>
+        </record>
+    
+        <record id="view_message_graph" model="ir.ui.view">
+            <field name="name">mail.message.graph</field>            
+            <field name="model">mail.message</field>
+            <field name="priority">1000</field>   
+            <field name="arch" type="xml">
+                <graph  string="Messages">
+                    <field name="mail_activity_type_id" type="col" />
+                    <field name="date" string="Date of Done"  interval="month" type="row" />
+                    <field name="author_id" string="Done by" type="row" />
+                </graph>
+            </field>
+        </record>
+
+
+
+
+
+
+
+
+        <record model="ir.actions.server" id="action_view_mail_message"> <!-- Menu + python -->
+            <field name="name">Done Activity Logs</field>
+            <field name="model_id" ref="mail.model_mail_message" />
+            <field name="state">code</field>
+            <field name="code">
+                action = model.rt_activity_mgmt_action_view_mail_message()
+            </field>
+        </record>
+
+        <menuitem id="menu_action_mail_message"
+            name="Done Activity Logs"
+            parent="mail_activity_menu_root"
+            sequence="5"
+            action="action_view_mail_message" />
+
+
+    </data>
+</odoo>

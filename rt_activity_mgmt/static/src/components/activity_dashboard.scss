@@ -1,0 +1,153 @@
+
+/* Dashboard Wrapper
+----------------------*/
+
+.rt_activity_mgmt_act_dashboard_wrapper{
+    padding-top: 16px;
+    padding-bottom: 16px;	
+    
+    background-color: white;
+        position: relative;
+        max-width: 100%;
+        //flex: 1 0 100%;
+        //padding: 10px 10px 18px;
+        padding-top: 10px;
+        padding-right: 10px;
+        padding-bottom: 18px;
+        padding-left: 10px;
+    
+    }
+    
+    .o_kanban_view .rt_activity_mgmt_act_dashboard_wrapper{
+    background-color: inherit;	
+    }
+    
+    /* Counter Tile
+    ----------------------*/
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_row_overview_all{
+        margin-right: 0px;
+        margin-left: 0px;
+        font-weight: bolder;
+    }
+    // Total
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_total_tile{
+        background-color: #0078d4;
+        padding:5px;
+        text-align: center;
+        color: white;
+    }
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_total_tile .rt_state_count_tile_heading{
+        font-size: 16px;
+    }
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_total_tile .rt_state_count_tile_number{
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    
+    
+    
+    // Overdue
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_overdue_tile{
+        background-color: #bd2130;
+        padding:5px;
+        text-align: center;
+        color: white;
+    }
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_overdue_tile .rt_state_count_tile_heading{
+        font-size: 16px;
+    }
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_overdue_tile .rt_state_count_tile_number{
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    
+    
+    // Today
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_today_tile{
+        background-color: #d39e00;
+        padding:5px;
+        text-align: center;
+        color: white;
+    }
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_today_tile .rt_state_count_tile_heading{
+        font-size: 16px;
+    }
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_today_tile .rt_state_count_tile_number{
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    
+    
+    // Planned
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_planned_tile{
+        background-color: #1e7e34;
+        padding:5px;
+        text-align: center;
+        color: white;
+    }
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_planned_tile .rt_state_count_tile_heading{
+        font-size: 16px;
+    }
+    .rt_activity_mgmt_act_dashboard_wrapper .rt_state_count_planned_tile .rt_state_count_tile_number{
+        font-size: 20px;
+        font-weight: 600;
+    }
+    
+    
+    /* Kanban View
+    ---------------------------------*/
+    .rt_activity_mgmt_kanban_wrapper .rt_activity_mgmt_activity_color_planned{
+            color: #1e7e34;
+    }
+    
+    .rt_activity_mgmt_kanban_wrapper .rt_activity_mgmt_activity_color_overdue{
+            color: #bd2130;
+    }
+    
+    .rt_activity_mgmt_kanban_wrapper .rt_activity_mgmt_activity_color_today{
+        color: #d39e00;	
+    }
+    
+    
+    .rt_activity_mgmt_content {
+        .o_kanban_renderer {
+            &.o_kanban_grouped, &.o_kanban_ungrouped  {
+                min-height: auto; // override min-height: 100%
+            }
+        }
+    }
+    
+    
+// activities dashboard css    
+.o_list_view .rt_activity_mgmt_content{
+    height: 100%;
+    overflow: hidden;
+    width: 100%;
+    .test{
+        height: 100%;
+        overflow: scroll;
+        width: 100%;        
+        >.o_list_renderer.o_renderer.table-responsive{
+            overflow: unset;
+        }      
+        > .o_list_renderer.o_renderer{
+            height: 100%;
+        }  
+    }
+}
+
+// kanban view
+.o_kanban_view{
+    .rt_activity_mgmt_content{
+        overflow: hidden;
+        height: 100%;
+        overflow-y: auto;
+        .o_kanban_renderer.o_kanban_ungrouped{
+            min-height: 100%;
+            overflow: unset;
+        }
+    }
+}

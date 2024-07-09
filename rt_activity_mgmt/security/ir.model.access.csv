@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_rt_activity_mgmt_mail_activity_tag_all,access.rt.activity.mgmt.mail.activity.tag.all,model_rt_activity_mgmt_mail_activity_tag,,1,0,0,0
+access_rt_activity_mgmt_mail_activity_tag_user,access.rt.activity.mgmt.mail.activity.tag.user,model_rt_activity_mgmt_mail_activity_tag,base.group_user,1,1,1,1

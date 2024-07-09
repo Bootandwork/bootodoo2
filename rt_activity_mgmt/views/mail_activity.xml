@@ -1,0 +1,399 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="mail_activity_form" model="ir.ui.view">
+        <field name="name">mail.activity.form</field>
+        <field name="model">mail.activity</field>
+        <field name="inherit_id" ref="mail.mail_activity_view_form_popup" />
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="rt_activity_mgmt_color" invisible="1" />
+                <field name="rt_activity_mgmt_priority" widget="priority" />
+                <field name="rt_activity_mgmt_tag_ids" widget="many2many_tags"
+                    options="{'color_field': 'color', 'no_create_edit': True, 'no_quick_create': True}" />
+            </field>
+        </field>
+    </record>
+
+    <record id="mail_activity_kanban" model="ir.ui.view">
+        <field name="name">mail.activity.kanban</field>
+        <field name="model">mail.activity</field>
+        <field name="arch" type="xml">
+            <kanban create="0"
+                js_class="rt_activity_mgmt_kanban_activity_dashboard"
+                group_create="0" group_delete="0" group_edit="1" class="o_kanban_small_column">
+                <field name="display_name" />
+                <field name="summary" />
+                <field name="date_deadline" />
+                <field name="user_id" />
+                <field name="activity_type_id" />
+                <field name="create_date" />
+                <field name="state" />
+                <field name="icon" />
+                <field name="res_model_id" />
+                <field name="res_name" />
+                <field name="previous_activity_type_id" />
+                <field name="recommended_activity_type_id" />
+                <field name="rt_activity_mgmt_color" />
+                <field name="rt_activity_mgmt_priority" />
+
+                <templates>
+                    <t t-name="kanban-box">
+                        <div
+                            t-attf-class="#{!selection_mode ? kanban_color(record.rt_activity_mgmt_color.raw_value) : ''} oe_kanban_global_click rt_activity_mgmt_kanban_wrapper">
+                            <div class="o_dropdown_kanban dropdown">
+                                <a class="dropdown-toggle o-no-caret btn" role="button"
+                                    data-toggle="dropdown" data-display="static" href="#"
+                                    aria-label="Dropdown menu" title="Dropdown menu">
+                                    <span class="fa fa-ellipsis-v" />
+                                </a>
+                                <div class="dropdown-menu" role="menu">
+                                    <ul class="oe_kanban_colorpicker"
+                                        data-field="rt_activity_mgmt_color" />
+                                </div>
+                            </div>
+                            <div class="oe_kanban_content">
+                                <div class="row mb4">
+                                    <div class="col-8">
+                                        <strong>
+                                            <h4 class="mb-0">
+                                                <t t-esc="record.display_name.value" />
+                                            </h4>
+                                        </strong>
+                                    </div>
+                                </div>
+
+                                <div class="o_kanban_record_subtitle">
+                                    <strong>Activity type: </strong>
+                                    <span
+                                        t-attf-class="mr-2 rt_activity_mgmt_activity_color_#{record.state.raw_value}"
+                                        class="mr-2">
+                                        <i t-attf-class="fa #{record.icon.value}"></i>
+                                    </span>
+
+                                    <field name="activity_type_id" />
+
+                                    <br />
+                                    <strong>Due on: </strong>
+                                    <span
+                                        t-attf-class="rt_activity_mgmt_activity_color_#{record.state.raw_value}">
+                                        <field name="date_deadline" />
+                                    </span>
+                                    <br />
+                                    <strong>Deadline: </strong>
+
+                                    <span
+                                        t-attf-class="font-weight-bold rt_activity_mgmt_activity_color_#{record.state.raw_value}">
+                                        <field name="date_deadline" widget="remaining_days" />
+                                    </span>
+
+                                    <br />
+
+                                    <strong>Assigned to: </strong>
+                                    <field name="user_id" />
+                                    <field name="user_id" widget="many2one_avatar_user" />
+                                    <br />
+
+                                    <strong>Document Name: </strong>
+                                    <field name="res_name" />
+                                    <br />
+                                    <strong>Document Model: </strong>
+                                    <field name="res_model_id" />
+                                    <br />
+                                    <strong>Created on: </strong>
+                                    <field name="create_date" />
+                                    <br />
+
+                                    <strong>Created by: </strong>
+                                    <field name="create_uid" />
+                                    <field name="create_uid" widget="many2one_avatar_user" />
+                                    <br />
+                                </div>
+
+                                <div>
+                                    <field name="rt_activity_mgmt_tag_ids" widget="many2many_tags"
+                                        options="{'color_field': 'color'}" />
+                                </div>
+
+                                <div class="o_kanban_record_bottom">
+                                    <div class="oe_kanban_bottom_left">
+                                        <field name="rt_activity_mgmt_priority" widget="priority"
+                                            groups="base.group_user" />
+                                    </div>
+
+                                    <div class="oe_kanban_bottom_right">
+                                        <field name="state" widget="label_selection"
+                                            options="{'classes': {'planned': 'success', 'default': 'info', 'today': 'warning', 'overdue': 'danger'}}" />
+                                    </div>
+                                </div>
+
+                                <div class="row o_kanban_primary_bottom mt-2" style="">
+                                    <div class="col-6">
+                                        <a role="button" style="padding: 0rem 0rem;"
+                                            name="action_rt_activity_mgmt_activity_document"
+                                            type="object" class="btn text-primary">
+                                            <span title="Document">
+                                                <i class="fa fa-file-text" role="img"
+                                                    aria-label="Document" /> Document </span>
+                                        </a>
+                                    </div>
+
+                                    <div class="col-6">
+                                        <!--                                           <a role="button"
+                                        name="action_rt_activity_mgmt_activity_edit" type="object"
+                                        class="btn text-primary">
+                                                <span title="Edit"><i class="fa fa-pencil" role="img" aria-label="Edit"/>
+												Edit
+												</span> 
+                                            </a>  -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="oe_clear" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="mail_activity_tree" model="ir.ui.view">
+        <field name="name">mail.activity.tree</field>
+        <field name="model">mail.activity</field>
+
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <tree string="Activity"
+                js_class="rt_activity_mgmt_list_activity_dashboard"
+                default_order="date_deadline" create="0" delete="0" multi_edit="1">
+                <field name="display_name" optional="show" />
+                <field name="summary" decoration-bf="1" optional="show" />
+                <field name="date_deadline" optional="show" />
+
+                <field name="date_deadline" string="Deadline" widget="remaining_days"
+                    optional="show" options="{'allow_order': '1'}" />
+
+                <field name="user_id" widget="many2one_avatar_user" optional="show" />
+                <field name="activity_type_id" optional="show" />
+
+                <field name="create_date" optional="show" />
+                <field name="state" decoration-success="state == 'planned'"
+                    decoration-info="state == 'default'" decoration-warning="state == 'today'"
+                    decoration-danger="state == 'overdue'" widget="badge" optional="show" />
+                <field name="res_model" invisible="1" />
+                <field name="rt_activity_mgmt_priority" optional="hide" />
+
+                <field name="res_model_id" optional="show" readonly="1" />
+                <field name="res_name" optional="show" />
+                <field name="rt_activity_mgmt_tag_ids" optional="show" widget="many2many_tags"
+                    options="{'color_field': 'color', 'no_create_edit': True, 'no_quick_create': True}" />
+
+                <field name="previous_activity_type_id" optional="hide" />
+                <field name="recommended_activity_type_id" optional="hide" />
+
+                <button string="Edit" name="action_rt_activity_mgmt_activity_edit" type="object"
+                    icon="fa-pencil" />
+
+                <button string="Document" name="action_rt_activity_mgmt_activity_document"
+                    type="object" icon="fa-file-text" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="mail_activity_calendar" model="ir.ui.view">
+        <field name="name">mail.activity.calendar</field>
+        <field name="model">mail.activity</field>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <calendar string="Activity"
+                mode="month" delete="0" create="0"
+                date_start="date_deadline" color="user_id"
+                hide_time="true" quick_add="False" event_limit="5">
+                <field name="display_name" />
+                <field name="summary" />
+                <field name="user_id" avatar_field="image_128" filters="1" />
+                <field name="activity_type_id" filters="1" />
+
+                <!--<field
+                name="state" filters="1" />-->
+
+                <!--                <field name="rt_activity_mgmt_color" invisible="1" />-->
+
+                <field name="rt_activity_mgmt_priority" />
+
+                <field name="create_date" />
+                <field name="res_model_id" filters="1" />
+                <field name="res_name" />
+                <field name="create_uid" filters="1" />
+            </calendar>
+        </field>
+    </record>
+
+    <record id="mail_activity_pivot" model="ir.ui.view">
+        <field name="name">crm.activity.pivot</field>
+        <field name="model">mail.activity</field>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <pivot string="Activities Analysis">
+                <field name="activity_type_id" type="col" />
+                <field name="date_deadline" interval="month" type="row" />
+            </pivot>
+        </field>
+    </record>
+
+    <record id="mail_activity_graph" model="ir.ui.view">
+        <field name="name">crm.activity.graph</field>
+        <field name="model">mail.activity</field>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <graph string="Activities">
+                <field name="activity_type_id" type="col" />
+                <field name="date_deadline" interval="month" type="row" />
+            </graph>
+        </field>
+    </record>
+
+    <record id="mail_activity_search" model="ir.ui.view">
+        <field name="name">mail.activity.search</field>
+        <field name="model">mail.activity</field>
+        <field name="priority">30</field>
+        <field name="arch" type="xml">
+            <search string="Activity">
+                <field
+                    name="summary"
+                    string="Activity"
+                    filter_domain="['|', '|', '|','|',('res_model_id.name', 'ilike', self),('activity_type_id.name', 'ilike', self), ('summary', 'ilike', self), ('res_name', 'ilike', self), ('user_id.name', 'ilike', self)]"
+                />
+
+                <field name="rt_activity_mgmt_tag_ids" string="Tag"
+                    filter_domain="[('rt_activity_mgmt_tag_ids', 'ilike', self)]" />
+
+                <field name="user_id" />
+                <field name="date_deadline" />
+                <field name="res_model_id" />
+                <field name="summary" />
+                <field name="activity_type_id" />
+
+                <filter string="My Activities" domain="[('user_id', '=', uid)]"
+                    name="filter_my_activities" />
+
+                <separator />
+
+                <filter string="Overdue/Late Activities" name="filter_activities_overdue"
+                    domain="[('date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has next action date is before today" />
+
+                <filter string="Today Activities" name="filter_activities_today"
+                    domain="[('date_deadline', '=', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has action date today" />
+
+                <filter string="Planned/Future Activities" name="filter_activities_upcoming"
+                    domain="[('date_deadline', '&gt;', context_today().strftime('%Y-%m-%d'))]"
+                    help="Show all records which has next action date is after today" />
+
+                <!-- <separator/>
+						
+                <filter name="filter_activities_current_month" string="This Month Deadline" domain="[
+                    ('date_deadline', '&gt;=', (context_today()).strftime('%Y-%m-01')),
+                    ('date_deadline', '&lt;', (context_today() + relativedelta(months=1)).strftime('%Y-%m-01'))]"/>						
+			     -->
+
+                <filter name="filter_activities_create_date_last_24h" string="Created on last 24h"
+                    domain="[('create_date','&gt;', (context_today() - datetime.timedelta(days=1)).strftime('%%Y-%%m-%%d') )]" />
+
+                <filter
+                    name="filter_activities_create_date_this_week"
+                    string="Created on this week"
+                    domain="[
+                        ('create_date', '>=', (datetime.datetime.combine(context_today() + relativedelta(weeks=-1,days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S')),
+                        ('create_date', '&lt;', (datetime.datetime.combine(context_today() + relativedelta(days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S'))]"
+                />
+
+                <separator />
+
+                <filter string="Due Date" name="filter_date_deadline" date="date_deadline" />
+                <filter string="Create Date" name="filter_create_date" date="create_date" />
+
+                <separator />
+                <filter string="Low Priority" domain="[('rt_activity_mgmt_priority', '=', '0')]"
+                    name="filter_priority_low" />
+                <filter string="Medium Priority" domain="[('rt_activity_mgmt_priority', '=', '1')]"
+                    name="filter_priority_medium" />
+                <filter string="High Priority" domain="[('rt_activity_mgmt_priority', '=', '2')]"
+                    name="filter_priority_high" />
+                <filter string="Very High Priority"
+                    domain="[('rt_activity_mgmt_priority', '=', '3')]"
+                    name="filter_priority_very_high" />
+
+                <group expand="0" string="Group By">
+                    <filter string="Assigned to" name="groupby_assigned_to"
+                        context="{'group_by': 'user_id'}" />
+                    <filter string="Deadline" name="groupby_date_deadline"
+                        context="{'group_by': 'date_deadline'}" />
+
+                    <filter string="Created on" name="groupby_create_date"
+                        context="{'group_by': 'create_date'}" />
+
+                    <filter string="Created By" name="groupby_create_uid"
+                        context="{'group_by': 'create_uid'}" />
+                    <filter string="Activity Type" name="groupby_activity_type_id"
+                        context="{'group_by': 'activity_type_id'}" />
+
+                    <filter string="Priority" name="groupby_rt_activity_mgmt_priority"
+                        context="{'group_by': 'rt_activity_mgmt_priority'}" />
+
+                    <filter string="Document Model" name="groupby_res_model_id"
+                        context="{'group_by': 'res_model_id'}" />
+                    <filter string="Document Name" name="groupby_res_name"
+                        context="{'group_by': 'res_name'}" />
+                </group>
+
+                <searchpanel>
+                    <field name="activity_type_id" icon="fa-th-large" enable_counters="1" />
+                    <field name="rt_activity_mgmt_priority" icon="fa-arrow-up" enable_counters="1" />
+                    <field name="user_id"
+                        hierarchize="0" select="one"
+                        icon="fa-users" enable_counters="1" />
+                    <field name="res_model_id" icon="fa-file-text" enable_counters="1" />
+                </searchpanel>
+
+            </search>
+        </field>
+    </record>
+
+    <record id="mail_activity_action" model="ir.actions.act_window">
+        <field name="name">Activities</field>
+        <field name="res_model">mail.activity</field>
+        <field name="view_mode">tree,kanban</field>
+        <field name="search_view_id" ref="mail_activity_search" />
+        <field
+            name="view_ids"
+            eval="[(5, 0, 0),
+                (0, 0, {'view_mode': 'tree', 'view_id': ref('mail_activity_tree')}),
+                (0, 0, {'view_mode': 'kanban', 'view_id': ref('mail_activity_kanban')}),
+                          (0, 0, {'view_mode': 'calendar','view_id': ref('mail_activity_calendar')}),
+                          (0, 0, {'view_mode': 'pivot', 'view_id': ref('mail_activity_pivot')}),
+                          (0, 0, {'view_mode': 'graph', 'view_id': ref('mail_activity_graph')})
+]"
+        />
+
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new activity
+            </p>
+        </field>
+    </record>
+
+    <menuitem name="Activities" id="mail_activity_menu_root" sequence="7"
+        web_icon="rt_activity_mgmt,static/src/img/icon/icon.png" />
+
+    <menuitem id="mail_activity_menu" name="Activities" action="mail_activity_action"
+        parent="mail_activity_menu_root" sequence="2" />
+
+    <menuitem id="menu_mail_activity_config"
+        name="Configuration"
+        groups="base.user_admin,rt_activity_mgmt.rt_activity_mgmt_group_mail_activity_manager"
+        parent="mail_activity_menu_root" sequence="30" />
+
+    <menuitem id="menu_rt_activity_mgmt_mail_activity_tag_config" parent="menu_mail_activity_config"
+        action="rt_activity_mgmt_mail_activity_tag_action" sequence="2" />
+</odoo>

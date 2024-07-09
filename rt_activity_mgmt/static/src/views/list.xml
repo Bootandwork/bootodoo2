@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="rt_activity_mgmt.RTActivityMgmtListRenderer" owl="1">
+        <div class="rt_activity_mgmt_content">
+            <div class="test"> 
+                <RTActivityMgmtDashboard domain="props.list.domain"/>
+                <!-- <div class="table-responsive"> -->
+                    <!-- <div class=""> -->
+                        <t t-call="web.ListRenderer"/>
+                    <!-- </div> -->
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
+
+<!-- d-flex flex-column h-100     -->

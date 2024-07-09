@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- 
+        This template is for a table at the top of activity views 
+        that shows some KPIs. 
+    -->
+
+    <t t-name="rt_activity_mgmt.RTActivityMgmtDashboard" owl="1">
+        <div class="rt_activity_mgmt_act_dashboard_wrapper container">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h5>Overview</h5>
+                    <a class="" data-bs-toggle="collapse" 
+                     data-bs-target="#rt_activity_mgmt_overview_by_activity_type"
+
+                    role="button" 
+                    aria-expanded="false" 
+                    aria-controls="rt_activity_mgmt_overview_by_activity_type">
+                        <div class="row rt_row_overview_all">
+                            <div class="col rt_state_count_total_tile">
+                                <div class="rt_state_count_tile_heading">Total</div>
+                                <div class="rt_state_count_tile_number">
+                                    <t t-esc="state.infos.all_state_overdue + state.infos.all_state_today + state.infos.all_state_planned" />
+                                </div>
+                            </div>
+                            <div class="col rt_state_count_overdue_tile">
+                                <div class="rt_state_count_tile_heading">Overdue</div>
+                                <div class="rt_state_count_tile_number">
+                                    <t t-esc="state.infos.all_state_overdue" />
+                                </div>
+                            </div>
+                            <div class="col rt_state_count_today_tile">
+                                <div class="rt_state_count_tile_heading">Today</div>
+                                <div class="rt_state_count_tile_number">
+                                    <t t-esc="state.infos.all_state_today" />
+                                </div>
+                            </div>
+                            <div class="col rt_state_count_planned_tile">
+                                <div class="rt_state_count_tile_heading">Planned</div>
+                                <div class="rt_state_count_tile_number">
+                                    <t t-esc="state.infos.all_state_planned" />
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+
+                <div class="col-sm-12 collapse" id="rt_activity_mgmt_overview_by_activity_type">
+                    <div class="row rt_row_overview_all mt-2">
+                        <div t-if="state.infos.list_overview_activity_type" style="width: 100%;">
+                            <div class="row rt_row_overview_all p-1 font-weight-bold border-bottom border-primary">
+                                <div class="col">
+                                    Activity Type
+                                </div>
+                                <div class="col">
+                                    Overdue
+                                </div>
+                                <div class="col">
+                                    Today
+                                </div>
+                                <div class="col">
+                                    Planned
+                                </div>
+                            </div>
+
+                            <div class="row rt_row_overview_all p-1 border-bottom border-primary" t-foreach="state.infos.list_overview_activity_type" t-as="dic_overview_activity_type" t-key="dic_overview_activity_type_index">
+                                <div class="col">
+                                    <span t-esc="dic_overview_activity_type['activity_type_name']" />
+                                </div>
+                                <div class="col">
+                                    <span t-esc="dic_overview_activity_type['overdue']" />
+                                </div>
+                                <div class="col">
+                                    <span t-esc="dic_overview_activity_type['today']" />
+                                </div>
+                                <div class="col">
+                                    <span t-esc="dic_overview_activity_type['planned']" />
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>
