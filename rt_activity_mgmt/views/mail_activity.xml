@@ -391,7 +391,7 @@
 
     <menuitem id="menu_mail_activity_config"
         name="Configuration"
-        groups="base.user_admin,rt_activity_mgmt.rt_activity_mgmt_group_mail_activity_manager"
+        groups="base.group_system,rt_activity_mgmt.rt_activity_mgmt_group_mail_activity_manager"
         parent="mail_activity_menu_root" sequence="30" />
 
     <menuitem id="menu_rt_activity_mgmt_mail_activity_tag_config" parent="menu_mail_activity_config"
