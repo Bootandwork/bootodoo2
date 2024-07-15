@@ -10,7 +10,7 @@ class AccountMove(models.Model):
     def _compute_last_payment_date(self):
         self.ensure_one()
         payments = self.env['account.payment'].search([
-            ('invoice_ids', 'in', self.id)
+            (self.id, 'in', 'invoice_ids')
         ], order='payment_date desc', limit=1)
         for record in self:
             record.last_payment_date = payments
