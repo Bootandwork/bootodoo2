@@ -13,7 +13,10 @@ class AccountMove(models.Model):
             (self.id, 'in', 'invoice_ids')
         ], order='payment_date desc', limit=1)
         for record in self:
-            record.last_payment_date = payments
+            if payments:
+                record.last_payment_date = payments
+            else:
+                record.last_payment_date = False
     # def _compute_last_payment_date(self):
     #     for record in self:
     #         if record.payment_ids:
