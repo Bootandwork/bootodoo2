@@ -11,7 +11,7 @@ class AccountMove(models.Model):
         self.ensure_one()
         payments = self.env['payment.transaction'].search([
             ('invoice_ids', 'in', self.id)
-        ], order='payment_date desc', limit=1)
+        ], order='last_state_change desc', limit=1)
         for record in self:
             if payments:
                 record.last_payment_date = payments
