@@ -11,13 +11,13 @@ class AccountMove(models.Model):
         # self.ensure_one()
         for record in self:
             payments = self.env['account.payment'].search([
-                ('ref', '=', self.name)
+                ('ref', '=', record.name)
             ], order='date desc', limit=1)
             if payments:
                 record.last_payment_date = payments.date
             else:
                 payments = self.env['payment.transaction'].search([
-                ('invoice_ids', '=', self.id)
+                ('invoice_ids', '=', record.id)
             ], order='last_state_change desc', limit=1)
                 if payments:
                     record.last_payment_date = payments.last_state_change.date()
