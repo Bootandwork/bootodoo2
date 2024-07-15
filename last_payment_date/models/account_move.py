@@ -4,7 +4,7 @@ from odoo import models, fields, api
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    last_payment_date = fields.Datetime(string='Last Payment Date', readonly=True, compute="_compute_last_payment_date")
+    last_payment_date = fields.Date(string='Last Payment Date', readonly=True, compute="_compute_last_payment_date")
 
     @api.depends('amount_residual_signed')
     def _compute_last_payment_date(self):
@@ -14,7 +14,7 @@ class AccountMove(models.Model):
         ], order='date desc', limit=1)
         for record in self:
             if payments:
-                record.last_payment_date = payments.last_state_change
+                record.last_payment_date = payments.date
             else:
                 record.last_payment_date = False
     # def _compute_last_payment_date(self):
