@@ -6,7 +6,7 @@ class AccountMove(models.Model):
 
     last_payment_date = fields.Date(string='Last Payment Date', readonly=True)
 
-    @api.depends('amount_total')
+    @api.depends('amount_residual_signed')
     def _compute_last_payment_date(self):
         for record in self:
             if record.payment_ids:
@@ -15,6 +15,6 @@ class AccountMove(models.Model):
             else:
                 record.last_payment_date = False
 
-    @api.onchange('amount_total')
+    @api.onchange('amount_residual_signed')
     def _onchange_amount_total(self):
         self._compute_last_payment_date()
