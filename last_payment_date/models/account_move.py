@@ -9,9 +9,9 @@ class AccountMove(models.Model):
     @api.depends('amount_residual_signed')
     def _compute_last_payment_date(self):
         self.ensure_one()
-        payments = self.env['payment.transaction'].search([
-            ('invoice_ids', 'in', self.id)
-        ], order='last_state_change desc', limit=1)
+        payments = self.env['account.payment'].search([
+            ('ref', '=', self.name)
+        ], order='date desc', limit=1)
         for record in self:
             if payments:
                 record.last_payment_date = payments.last_state_change
