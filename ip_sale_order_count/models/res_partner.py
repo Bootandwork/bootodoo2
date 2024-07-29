@@ -5,7 +5,7 @@ class ResPartner(models.Model):
 
     ip_sale_order_count = fields.Integer(string="Pedidos de Venta", compute="_compute_ip_sale_order_count")
 
-    @api.depends('id')
+    @api.depends('sale_order_ids')
     def _compute_ip_sale_order_count(self):
         for rec in self:
             sale_orders = self.env['sale.order'].search([('partner_id', '=', rec.id), ('state', '=', 'sale')])
