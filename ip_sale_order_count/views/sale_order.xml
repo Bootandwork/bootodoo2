@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <record id="ip_inherit_sale_order_form" model="ir.ui.view">
+    <!-- <record id="ip_inherit_sale_order_form" model="ir.ui.view">
         <field name="name">sale.order.view.form.inherit</field>
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
@@ -10,6 +10,6 @@
                 <field name="ip_sale_order_count" />
             </xpath>
         </field>
-    </record>
+    </record> -->
 
 </odoo>
