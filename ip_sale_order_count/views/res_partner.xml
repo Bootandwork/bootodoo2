@@ -7,7 +7,7 @@
         <field name="inherit_id" ref="sale.res_partner_view_buttons"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='sale_order_count']" position="replace">
-                <field name="ip_sale_order_count" />
+                <field string="Ventas" name="ip_sale_order_count" widget="statinfo"/>
             </xpath>
         </field>
     </record>
