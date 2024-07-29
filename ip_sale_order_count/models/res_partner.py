@@ -9,4 +9,4 @@ class ResPartner(models.Model):
     def _compute_ip_sale_order_count(self):
         for rec in self:
             sale_orders = self.env['sale.order'].search([('partner_id', '=', rec.id), ('state', '=', 'sale')])
-            rec.sale_order_count = len(sale_orders)
+            rec.ip_sale_order_count = len(sale_orders)
