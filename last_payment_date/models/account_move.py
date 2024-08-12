@@ -29,7 +29,7 @@ class AccountMove(models.Model):
                         ('matching_number', '=', all_payments.matching_number)
                     ], order='date desc', limit=1)
                     if payments:
-                        record.last_payment_date = payments.date()
+                        record.last_payment_date = payments.date
                     else:
                         record.last_payment_date = False
     # def _compute_last_payment_date(self):
