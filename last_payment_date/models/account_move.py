@@ -24,7 +24,7 @@ class AccountMove(models.Model):
                 else:
                     all_payments = self.env['account.move.line'].search([
                         ('name', '=', record.name)
-                    ])
+                    ], limit=1)
                     payments = self.env['account.move.line'].search([
                         ('matching_number', '=', all_payments.matching_number)
                     ], order='date desc', limit=1)
