@@ -22,7 +22,13 @@ class AccountMove(models.Model):
                 if payments:
                     record.last_payment_date = payments.last_state_change.date()
                 else:
-                    record.last_payment_date = False
+                    payments = self.env['account.move.line'].search([
+                        ('matching_number', '=', record.line_ids[-1])
+                    ], order='date desc', limit=1)
+                    if payments:
+                        record.last_payment_date = payments.date()
+                    else:
+                        record.last_payment_date = False
     # def _compute_last_payment_date(self):
     #     for record in self:
     #         if record.payment_ids:
