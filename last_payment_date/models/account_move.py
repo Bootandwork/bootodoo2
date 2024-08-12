@@ -8,30 +8,33 @@ class AccountMove(models.Model):
 
     @api.depends('amount_residual_signed')
     def _compute_last_payment_date(self):
+        if record.payment_state != "not_paid":
         # self.ensure_one()
-        for record in self:
-            payments = self.env['account.payment'].search([
-                ('ref', '=', record.name)
-            ], order='date desc', limit=1)
-            if payments:
-                record.last_payment_date = payments.date
-            else:
-                payments = self.env['payment.transaction'].search([
-                ('invoice_ids', '=', record.id)
-            ], order='last_state_change desc', limit=1)
+            for record in self:
+                payments = self.env['account.payment'].search([
+                    ('ref', '=', record.name)
+                ], order='date desc', limit=1)
                 if payments:
-                    record.last_payment_date = payments.last_state_change.date()
+                    record.last_payment_date = payments.date
                 else:
-                    all_payments = self.env['account.move.line'].search([
-                        ('name', '=', record.name)
-                    ], limit=1)
-                    payments = self.env['account.move.line'].search([
-                        ('matching_number', '=', all_payments.matching_number)
-                    ], order='date desc', limit=1)
+                    payments = self.env['payment.transaction'].search([
+                    ('invoice_ids', '=', record.id)
+                ], order='last_state_change desc', limit=1)
                     if payments:
-                        record.last_payment_date = payments.date
+                        record.last_payment_date = payments.last_state_change.date()
                     else:
-                        record.last_payment_date = False
+                        all_payments = self.env['account.move.line'].search([
+                            ('name', '=', record.name)
+                        ], limit=1)
+                        payments = self.env['account.move.line'].search([
+                            ('matching_number', '=', all_payments.matching_number)
+                        ], order='date desc', limit=1)
+                        if payments:
+                            record.last_payment_date = payments.date
+                        else:
+                            record.last_payment_date = False
+        else:
+            record.last_payment_date = False
     # def _compute_last_payment_date(self):
     #     for record in self:
     #         if record.payment_ids:
