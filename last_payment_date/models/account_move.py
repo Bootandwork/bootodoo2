@@ -8,9 +8,9 @@ class AccountMove(models.Model):
 
     @api.depends('amount_residual_signed')
     def _compute_last_payment_date(self):
-        if record.payment_state != "not_paid":
+        for record in self:
+            if record.payment_state != "not_paid":
         # self.ensure_one()
-            for record in self:
                 payments = self.env['account.payment'].search([
                     ('ref', '=', record.name)
                 ], order='date desc', limit=1)
@@ -33,8 +33,8 @@ class AccountMove(models.Model):
                             record.last_payment_date = payments.date
                         else:
                             record.last_payment_date = False
-        else:
-            record.last_payment_date = False
+            else:
+                record.last_payment_date = False
     # def _compute_last_payment_date(self):
     #     for record in self:
     #         if record.payment_ids:
