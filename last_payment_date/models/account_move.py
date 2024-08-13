@@ -1,5 +1,6 @@
 # invoice_last_payment_date/models/account_move.py
 from odoo import models, fields, api
+from openerp.exceptions import ValidationError
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -15,6 +16,7 @@ class AccountMove(models.Model):
                     ('ref', '=', record.name)
                 ], order='date desc', limit=1)
                 if payments:
+                    raise ValidationError(record.last_payment_date)
                     record.last_payment_date = payments.date
                 else:
                     payments = self.env['payment.transaction'].search([
