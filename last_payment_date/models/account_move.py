@@ -11,30 +11,38 @@ class AccountMove(models.Model):
     def _compute_last_payment_date(self):
         for record in self:
             if record.payment_state != "not_paid":
-        # self.ensure_one()
+                # Search for the latest payment date from account.payment
                 payments = self.env['account.payment'].search([
                     ('ref', '=', record.name)
-                ], order='date desc', limit=1)
-                if payments:
-                    raise ValidationError(payments.date)
-                    record.last_payment_date = payments.date
+                ], order='date desc')
+                
+                # Search for the latest payment date from payment.transaction
+                transactions = self.env['payment.transaction'].search([
+                    ('invoice_ids', 'in', record.ids)
+                ], order='last_state_change desc')
+                
+                # Search for the latest payment date from account.move.line
+                all_payments = self.env['account.move.line'].search([
+                    ('name', '=', record.name)
+                ], limit=1)
+                
+                if all_payments:
+                    move_lines = self.env['account.move.line'].search([
+                        ('matching_number', '=', all_payments.matching_number)
+                    ], order='date desc')
                 else:
-                    payments = self.env['payment.transaction'].search([
-                    ('invoice_ids', '=', record.id)
-                ], order='last_state_change desc', limit=1)
-                    if payments:
-                        record.last_payment_date = payments.last_state_change.date()
-                    else:
-                        all_payments = self.env['account.move.line'].search([
-                            ('name', '=', record.name)
-                        ], limit=1)
-                        payments = self.env['account.move.line'].search([
-                            ('matching_number', '=', all_payments.matching_number)
-                        ], order='date desc', limit=1)
-                        if payments:
-                            record.last_payment_date = payments.date
-                        else:
-                            record.last_payment_date = False
+                    move_lines = self.env['account.move.line'].browse()
+
+                # Collect the latest date from each type
+                payment_dates = [p.date for p in payments] + \
+                                [t.last_state_change for t in transactions] + \
+                                [m.date for m in move_lines]
+                
+                if payment_dates:
+                    # Assign the most recent date
+                    record.last_payment_date = max(payment_dates)
+                else:
+                    record.last_payment_date = False
             else:
                 record.last_payment_date = False
     # def _compute_last_payment_date(self):
