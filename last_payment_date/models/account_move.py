@@ -1,4 +1,3 @@
-# invoice_last_payment_date/models/account_move.py
 from odoo import models, fields, api
 from openerp.exceptions import ValidationError
 
@@ -11,17 +10,17 @@ class AccountMove(models.Model):
     def _compute_last_payment_date(self):
         for record in self:
             if record.payment_state != "not_paid":
-                # Search for the latest payment date from account.payment
+                # Buscar la fecha del último pago en account.payment
                 payments = self.env['account.payment'].search([
                     ('ref', '=', record.name)
                 ], order='date desc')
                 
-                # Search for the latest payment date from payment.transaction
+                # Buscar la fecha del último pago en payment.transaction
                 transactions = self.env['payment.transaction'].search([
                     ('invoice_ids', 'in', record.ids)
                 ], order='last_state_change desc')
                 
-                # Search for the latest payment date from account.move.line
+                # Buscar la fecha del último pago en account.move.line
                 all_payments = self.env['account.move.line'].search([
                     ('name', '=', record.name)
                 ], limit=1)
@@ -33,18 +32,23 @@ class AccountMove(models.Model):
                 else:
                     move_lines = self.env['account.move.line'].browse()
 
-                # Collect the latest date from each type
-                payment_dates = [p.date for p in payments] + \
-                                [t.last_state_change for t in transactions] + \
-                                [m.date for m in move_lines]
+                # Convertir los valores datetime a date
+                payment_dates = [
+                    fields.Date.to_date(p.date) for p in payments
+                ] + [
+                    fields.Date.to_date(t.last_state_change) for t in transactions
+                ] + [
+                    fields.Date.to_date(m.date) for m in move_lines
+                ]
                 
                 if payment_dates:
-                    # Assign the most recent date
+                    # Asignar la fecha más reciente
                     record.last_payment_date = max(payment_dates)
                 else:
                     record.last_payment_date = False
             else:
                 record.last_payment_date = False
+
     # def _compute_last_payment_date(self):
     #     for record in self:
     #         if record.payment_ids:
