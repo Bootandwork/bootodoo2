@@ -16,7 +16,7 @@ class AccountMove(models.Model):
                     ('ref', '=', record.name)
                 ], order='date desc', limit=1)
                 if payments:
-                    raise ValidationError(record.last_payment_date)
+                    raise ValidationError(payments.date)
                     record.last_payment_date = payments.date
                 else:
                     payments = self.env['payment.transaction'].search([
