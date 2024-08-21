@@ -22,8 +22,7 @@ class AccountMove(models.Model):
 
                 # Iterar sobre los pagos para encontrar la fecha más reciente
                 for payment in payments_data:
-                    payment_date_str = payment.get('date', '')
-                    payment_date = datetime.strptime(payment_date_str, '%Y-%m-%d')
+                    payment_date = payment.get('date')
 
                     if latest_payment_date is None or payment_date > latest_payment_date:
                         latest_payment_date = payment_date
