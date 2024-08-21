@@ -14,21 +14,27 @@ class AccountMove(models.Model):
                 if record.type_name == "Vendor Bill":
                     payments = self.env['account.payment'].search([
                         ('ref', '=', record.ref)
-                    ])
+                    ], order='date desc')
+                    all_payments = self.env['account.move.line'].search([
+                        ('name', '=', record.ref)
+                    ], limit=1)
+                    # transactions = self.env['payment.transaction'].search([
+                    #     ('invoice_ids', 'in', record.ids)
+                    # ], order='last_state_change desc')
                 else:
                     payments = self.env['account.payment'].search([
                         ('ref', '=', record.name)
                     ], order='date desc')
                 
-                # Buscar la fecha del último pago en payment.transaction
-                transactions = self.env['payment.transaction'].search([
-                    ('invoice_ids', 'in', record.ids)
-                ], order='last_state_change desc')
-                
-                # Buscar la fecha del último pago en account.move.line
-                all_payments = self.env['account.move.line'].search([
-                    ('name', '=', record.name)
-                ], limit=1)
+                    # Buscar la fecha del último pago en payment.transaction
+                    transactions = self.env['payment.transaction'].search([
+                        ('invoice_ids', 'in', record.ids)
+                    ], order='last_state_change desc')
+                    
+                    # Buscar la fecha del último pago en account.move.line
+                    all_payments = self.env['account.move.line'].search([
+                        ('name', '=', record.name)
+                    ], limit=1)
                 
                 if all_payments:
                     move_lines = self.env['account.move.line'].search([
