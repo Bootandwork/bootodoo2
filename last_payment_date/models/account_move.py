@@ -11,36 +11,30 @@ class AccountMove(models.Model):
         for record in self:
             if record.payment_state != "not_paid":
                 # Buscar la fecha del último pago en account.payment
-                if record.type_name == "Vendor Bill":
+                if record.move_type == "in_invoice":  # 'type_name' no es un campo estándar en Odoo
                     payments = self.env['account.payment'].search([
                         ('ref', '=', record.ref)
                     ], order='date desc')
                     all_payments = self.env['account.move.line'].search([
                         ('name', 'ilike', record.ref)
                     ])
-                    # transactions = self.env['payment.transaction'].search([
-                    #     ('invoice_ids', 'in', record.ids)
-                    # ], order='last_state_change desc')
                 else:
                     payments = self.env['account.payment'].search([
                         ('ref', '=', record.name)
                     ], order='date desc')
                 
-                    # Buscar la fecha del último pago en payment.transaction
-                    
-                    
                     # Buscar la fecha del último pago en account.move.line
                     all_payments = self.env['account.move.line'].search([
-                        ('name', '=', record.name)
-                    ], limit=1)
+                        ('name', 'ilike', record.name)
+                    ])
 
                 transactions = self.env['payment.transaction'].search([
-                        ('invoice_ids', 'in', record.ids)
-                    ], order='last_state_change desc')
+                    ('invoice_ids', 'in', record.ids)
+                ], order='last_state_change desc')
                 
                 if all_payments:
                     move_lines = self.env['account.move.line'].search([
-                        ('matching_number', '=', all_payments.matching_number)
+                        ('matching_number', '=', all_payments[0].matching_number)
                     ], order='date desc')
                 else:
                     move_lines = self.env['account.move.line'].browse()
