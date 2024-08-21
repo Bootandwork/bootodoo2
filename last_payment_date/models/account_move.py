@@ -17,7 +17,7 @@ class AccountMove(models.Model):
                     ], order='date desc')
                     all_payments = self.env['account.move.line'].search([
                         ('name', 'ilike', record.ref)
-                    ])
+                    ], order="date desc", limit = 1)
                 else:
                     payments = self.env['account.payment'].search([
                         ('ref', '=', record.name)
@@ -26,7 +26,7 @@ class AccountMove(models.Model):
                     # Buscar la fecha del último pago en account.move.line
                     all_payments = self.env['account.move.line'].search([
                         ('name', 'ilike', record.name)
-                    ])
+                    ], order="date desc", limit = 1)
 
                 transactions = self.env['payment.transaction'].search([
                     ('invoice_ids', 'in', record.ids)
@@ -34,7 +34,7 @@ class AccountMove(models.Model):
 
                 if all_payments:
                     move_lines = self.env['account.move.line'].search([
-                        ('matching_number', '=', all_payments[0].matching_number)
+                        ('matching_number', '=', all_payments.matching_number)
                     ], order='date desc')
                 else:
                     move_lines = self.env['account.move.line'].browse()
