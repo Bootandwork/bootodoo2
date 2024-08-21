@@ -16,7 +16,7 @@ class AccountMove(models.Model):
                         ('ref', '=', record.ref)
                     ], order='date desc')
                     all_payments = self.env['account.move.line'].search([
-                        ('name', '=', record.ref)
+                        ('matching_number', '=', record.line_ids[0].matching_number)
                     ], limit=1)
                     # transactions = self.env['payment.transaction'].search([
                     #     ('invoice_ids', 'in', record.ids)
