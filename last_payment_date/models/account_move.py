@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from openerp.exceptions import ValidationError
+from datetime import datetime
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -9,58 +9,26 @@ class AccountMove(models.Model):
     @api.depends('amount_residual_signed')
     def _compute_last_payment_date(self):
         for record in self:
-            if record.payment_state != "not_paid":
-                # Buscar la fecha del último pago en account.payment
-                payments = self.env['account.payment'].search([
-                    ('ref', '=', record.name)
-                ], order='date desc')
-                
-                # Buscar la fecha del último pago en payment.transaction
-                transactions = self.env['payment.transaction'].search([
-                    ('invoice_ids', 'in', record.ids)
-                ], order='last_state_change desc')
-                
-                # Buscar la fecha del último pago en account.move.line
-                all_payments = self.env['account.move.line'].search([
-                    ('name', '=', record.name)
-                ], limit=1)
-                
-                if all_payments:
-                    move_lines = self.env['account.move.line'].search([
-                        ('matching_number', '=', all_payments.matching_number)
-                    ], order='date desc')
-                else:
-                    move_lines = self.env['account.move.line'].browse()
+            # Obtener el contenido de invoice_payments_widget que ya es un diccionario
+            payments_widget_data = record.invoice_payments_widget
 
-                # Convertir los valores datetime a date
-                payment_dates = [
-                    fields.Date.to_date(p.date) for p in payments
-                ] + [
-                    fields.Date.to_date(t.last_state_change) for t in transactions
-                ] + [
-                    fields.Date.to_date(m.date) for m in move_lines
-                ]
-                
-                if payment_dates:
-                    # Asignar la fecha más reciente
-                    record.last_payment_date = max(payment_dates)
-                else:
-                    record.last_payment_date = False
+            # Verificar si el campo contiene datos válidos antes de intentar procesarlo
+            if payments_widget_data:
+                # Obtener la lista de pagos del diccionario
+                payments_data = payments_widget_data.get('content', [])
+
+                # Inicializar la variable para la fecha del último pago
+                latest_payment_date = None
+
+                # Iterar sobre los pagos para encontrar la fecha más reciente
+                for payment in payments_data:
+                    payment_date = payment.get('date')
+
+                    if latest_payment_date is None or payment_date > latest_payment_date:
+                        latest_payment_date = payment_date
+
+                # Asignar la fecha más reciente encontrada al campo last_payment_date
+                record.last_payment_date = latest_payment_date if latest_payment_date else False
             else:
+                # Si no hay datos en el campo, establecer last_payment_date como False
                 record.last_payment_date = False
-
-    # def _compute_last_payment_date(self):
-    #     for record in self:
-    #         if record.payment_ids:
-    #             last_payment = record.payment_ids.sorted(key=lambda p: p.payment_date, reverse=True)[0]
-    #             record.last_payment_date = last_payment.payment_date
-    #         else:
-    #             record.last_payment_date = False
-
-
-    
-        # return payments and payments[0] or False
-
-    # @api.onchange('amount_residual_signed')
-    # def _onchange_amount_total(self):
-    #     self._compute_last_payment_date()
