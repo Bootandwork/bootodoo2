@@ -1,6 +1,5 @@
 from odoo import models, fields, api
 from datetime import datetime
-import json
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -10,13 +9,13 @@ class AccountMove(models.Model):
     @api.depends('amount_residual_signed')
     def _compute_last_payment_date(self):
         for record in self:
-            # Obtener el campo invoice_payments_widget del registro account.move correspondiente
+            # Obtener el contenido de invoice_payments_widget que ya es un diccionario
             payments_widget_data = record.invoice_payments_widget
 
             # Verificar si el campo contiene datos válidos antes de intentar procesarlo
             if payments_widget_data:
-                # Convertir el JSON en una lista de diccionarios
-                payments_data = json.loads(payments_widget_data).get('content', [])
+                # Obtener la lista de pagos del diccionario
+                payments_data = payments_widget_data.get('content', [])
 
                 # Inicializar la variable para la fecha del último pago
                 latest_payment_date = None
