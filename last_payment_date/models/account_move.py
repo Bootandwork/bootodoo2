@@ -39,25 +39,20 @@ class AccountMove(models.Model):
                 else:
                     move_lines = self.env['account.move.line'].browse()
 
-                # Verificar y convertir las fechas
+                # Verificar y convertir las fechas, ignorando fechas nulas o inválidas
                 payment_dates = []
+                
                 for p in payments:
                     if p.date:
                         payment_dates.append(fields.Date.to_date(p.date))
-                    else:
-                        raise UserError(f"Fecha inválida en payment: {p}")
 
                 for t in transactions:
                     if t.last_state_change:
                         payment_dates.append(fields.Date.to_date(t.last_state_change))
-                    else:
-                        raise UserError(f"Fecha inválida en transaction: {t}")
 
                 for m in move_lines:
                     if m.date:
                         payment_dates.append(fields.Date.to_date(m.date))
-                    else:
-                        raise UserError(f"Fecha inválida en move_line: {m}")
 
                 if payment_dates:
                     # Asignar la fecha más reciente
