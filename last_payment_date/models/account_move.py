@@ -15,9 +15,13 @@ class AccountMove(models.Model):
                     payments = self.env['account.payment'].search([
                         ('ref', '=', record.ref)
                     ], order='date desc')
+                    matching_numbers = record.line_ids.mapped('matching_number')
+
+                    # Buscar todas las líneas de apunte que coincidan con los matching_numbers
                     all_payments = self.env['account.move.line'].search([
-                        ('matching_number', '=', record.line_ids[0].matching_number)
-                    ], limit=1)
+                        ('matching_number', 'in', matching_numbers),
+                        ('account_id.internal_type', 'in', ['receivable', 'payable'])
+                    ])
                     # transactions = self.env['payment.transaction'].search([
                     #     ('invoice_ids', 'in', record.ids)
                     # ], order='last_state_change desc')
