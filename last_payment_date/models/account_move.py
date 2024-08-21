@@ -19,8 +19,7 @@ class AccountMove(models.Model):
 
                     # Buscar todas las líneas de apunte que coincidan con los matching_numbers
                     all_payments = self.env['account.move.line'].search([
-                        ('matching_number', 'in', matching_numbers),
-                        ('account_id.internal_type', 'in', ['receivable', 'payable'])
+                        ('matching_number', 'in', matching_numbers)
                     ])
                     # transactions = self.env['payment.transaction'].search([
                     #     ('invoice_ids', 'in', record.ids)
