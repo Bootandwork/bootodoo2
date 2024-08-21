@@ -1,5 +1,5 @@
 from odoo import models, fields, api
-from odoo.exceptions import UserError
+from openerp.exceptions import ValidationError
 
 class AccountMove(models.Model):
     _inherit = 'account.move'
@@ -11,27 +11,25 @@ class AccountMove(models.Model):
         for record in self:
             if record.payment_state != "not_paid":
                 # Buscar la fecha del último pago en account.payment
-                if record.move_type == "in_invoice":
+                if record.type_name == "Vendor Bill":
                     payments = self.env['account.payment'].search([
                         ('ref', '=', record.ref)
-                    ], order='date desc')
-                    all_payments = self.env['account.move.line'].search([
-                        ('name', 'ilike', record.ref)
-                    ], order="date desc", limit = 1)
+                    ])
                 else:
                     payments = self.env['account.payment'].search([
                         ('ref', '=', record.name)
                     ], order='date desc')
-
-                    # Buscar la fecha del último pago en account.move.line
-                    all_payments = self.env['account.move.line'].search([
-                        ('name', 'ilike', record.name)
-                    ], order="date desc", limit = 1)
-
+                
+                # Buscar la fecha del último pago en payment.transaction
                 transactions = self.env['payment.transaction'].search([
                     ('invoice_ids', 'in', record.ids)
                 ], order='last_state_change desc')
-
+                
+                # Buscar la fecha del último pago en account.move.line
+                all_payments = self.env['account.move.line'].search([
+                    ('name', '=', record.name)
+                ], limit=1)
+                
                 if all_payments:
                     move_lines = self.env['account.move.line'].search([
                         ('matching_number', '=', all_payments.matching_number)
@@ -39,21 +37,15 @@ class AccountMove(models.Model):
                 else:
                     move_lines = self.env['account.move.line'].browse()
 
-                # Verificar y convertir las fechas, ignorando fechas nulas o inválidas
-                payment_dates = []
+                # Convertir los valores datetime a date
+                payment_dates = [
+                    fields.Date.to_date(p.date) for p in payments
+                ] + [
+                    fields.Date.to_date(t.last_state_change) for t in transactions
+                ] + [
+                    fields.Date.to_date(m.date) for m in move_lines
+                ]
                 
-                for p in payments:
-                    if p.date:
-                        payment_dates.append(fields.Date.to_date(p.date))
-
-                for t in transactions:
-                    if t.last_state_change:
-                        payment_dates.append(fields.Date.to_date(t.last_state_change))
-
-                for m in move_lines:
-                    if m.date:
-                        payment_dates.append(fields.Date.to_date(m.date))
-
                 if payment_dates:
                     # Asignar la fecha más reciente
                     record.last_payment_date = max(payment_dates)
@@ -61,3 +53,19 @@ class AccountMove(models.Model):
                     record.last_payment_date = False
             else:
                 record.last_payment_date = False
+
+    # def _compute_last_payment_date(self):
+    #     for record in self:
+    #         if record.payment_ids:
+    #             last_payment = record.payment_ids.sorted(key=lambda p: p.payment_date, reverse=True)[0]
+    #             record.last_payment_date = last_payment.payment_date
+    #         else:
+    #             record.last_payment_date = False
+
+
+    
+        # return payments and payments[0] or False
+
+    # @api.onchange('amount_residual_signed')
+    # def _onchange_amount_total(self):
+    #     self._compute_last_payment_date()
