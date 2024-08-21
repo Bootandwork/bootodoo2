@@ -12,7 +12,7 @@ class AccountMove(models.Model):
             if record.payment_state != "not_paid":
                 # Buscar la fecha del último pago en account.payment
                 if record.type_name == "Vendor Bill":
-                    payments = self.env['account.paymenr'].search([
+                    payments = self.env['account.payment'].search([
                         ('ref', '=', record.ref)
                     ])
                 else:
