@@ -16,8 +16,8 @@ class AccountMove(models.Model):
                         ('ref', '=', record.ref)
                     ], order='date desc')
                     all_payments = self.env['account.move.line'].search([
-                        ('name', '=', record.ref)
-                    ], limit=1)
+                        ('name', 'ilike', record.ref)
+                    ])
                     # transactions = self.env['payment.transaction'].search([
                     #     ('invoice_ids', 'in', record.ids)
                     # ], order='last_state_change desc')
