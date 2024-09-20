@@ -46,8 +46,8 @@
             <field name="name">Powerbi User</field>
             <field name='model_id' ref="model_powerbi_workspace" />
             <field name='groups' eval="[(4,ref('group_powerbi_user'))]"></field>
-            <field name='domain_force'>
-                ['|',('message_partner_ids','in',[user.partner_id.id]),('responsible_user.name','=',user.name)]</field>
+            <!-- <field name='domain_force'>
+                ['|',('message_partner_ids','in',[user.partner_id.id]),('responsible_user.name','=',user.name)]</field> -->
 
         </record>
 
@@ -63,8 +63,8 @@
             <field name="name">Powerbi User dataset</field>
             <field name='model_id' ref="model_powerbi_dataset" />
             <field name='groups' eval="[(4,ref('group_powerbi_user'))]"></field>
-            <field name='domain_force'>
-                ['|',('message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field>
+            <!-- <field name='domain_force'>
+                ['|',('message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field> -->
 
         </record>
 
@@ -80,8 +80,8 @@
             <field name="name">Powerbi User Table</field>
             <field name='model_id' ref="model_powerbi_table" />
             <field name='groups' eval="[(4,ref('group_powerbi_user'))]"></field>
-            <field name='domain_force'>
-                ['|',('message_partner_ids','in',[user.partner_id.id]),('dataset_id.workspace_id.responsible_user.name','=',user.name)]</field>
+            <!-- <field name='domain_force'>
+                ['|',('message_partner_ids','in',[user.partner_id.id]),('dataset_id.workspace_id.responsible_user.name','=',user.name)]</field> -->
         </record>
 
          <record id="rule_powerbi_manager_report" model="ir.rule">
@@ -96,8 +96,8 @@
             <field name="name">Powerbi User Report</field>
             <field name='model_id' ref="model_powerbi_report" />
             <field name='groups' eval="[(4,ref('group_powerbi_user'))]"></field>
-            <field name='domain_force'>
-                ['|',('message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field>
+            <!-- <field name='domain_force'>
+                ['|',('message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field> -->
         </record>
 
          <record id="rule_powerbi_manager_dashboard" model="ir.rule">
@@ -112,8 +112,8 @@
             <field name="name">Powerbi User Dashboard</field>
             <field name='model_id' ref="model_powerbi_dashboard" />
             <field name='groups' eval="[(4,ref('group_powerbi_user'))]"></field>
-            <field name='domain_force'>
-                ['|',('message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field>
+            <!-- <field name='domain_force'>
+                ['|',('message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field> -->
         </record>
 
     </data>
