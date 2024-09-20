@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+    <data>
+
+        <record id="powerbi_dashboard_form" model="ir.ui.view">
+            <field name="name">powerbi.dashboard.form</field>
+            <field name="model">powerbi.dashboard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Power BI Dashboard" create="false" js_class="powerbi_dashboard_form">
+                    <field name="powerbi_id" />
+                    <field name="name" invisible="1" />
+                    <div id="powerbi_dashboard_container" style="width:100%; height:500px;"></div>
+                </form>
+            </field>
+        </record>
+
+        <record id="powerbi_dashboard_tree" model="ir.ui.view">
+            <field name="name">powerbi.dashboard.tree</field>
+            <field name="model">powerbi.dashboard</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Power BI Dashboard Tree" create="false" edit="false">
+                    <field name="powerbi_id" />
+                    <field name="name" />
+                    <field name="workspace_id" />
+                    <field name="create_date" />
+                    <field name="create_uid" widget="many2one_avatar_user" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="powerbi_dashboard_action_tree" model="ir.actions.act_window">
+            <field name="name">Powerbi Dashboard</field>
+            <field name="res_model">powerbi.dashboard</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="powerbi_dashboard_tree" />
+        </record>
+
+    </data>
+</odoo>

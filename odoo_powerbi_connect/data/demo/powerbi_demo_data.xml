@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+    <data noupdate="1">
+
+        <record model="powerbi.workspace" id="id_default_workspace">
+            <field name="name">My Workspace</field>
+            <field name="default_workspace" eval="True"/>
+            <field name="is_published" eval="True"/>
+        </record>
+
+        <record model="powerbi.connector.dashboard" id="workspace_demo" >
+            <field name="name">Workspaces</field>
+            <field name="state">workspace</field>
+            <field name="color">2</field>
+        </record>
+           <record model="powerbi.connector.dashboard" id="dataset_demo">
+            <field name="name">Datasets</field>
+            <field name="state">dataset</field>
+            <field name="color">1</field>
+        </record>
+         <record model="powerbi.connector.dashboard" id="table_demo">
+            <field name="name">Tables</field>
+            <field name="state">table</field>
+            <field name="color">3</field>
+        </record>
+         <record model="powerbi.connector.dashboard" id="report_demo">
+            <field name="name">Power BI Reports</field>
+            <field name="state">report</field>
+            <field name="color">4</field>
+        </record>
+        <record model="powerbi.connector.dashboard" id="dashboard_demo">
+            <field name="name">Power BI Dashboards</field>
+            <field name="state">dashboard</field>
+            <field name="color">5</field>
+        </record>
+
+        <function model="powerbi.workspace" name="_create_sale_order_data"/>
+
+        <function model="powerbi.workspace" name="_create_invoice_data"/>
+
+        <function model="powerbi.workspace" name="_create_stock_data"/>
+
+        <function model="powerbi.workspace" name="_create_purchase_data"/>
+
+        <function model="powerbi.workspace" name="_create_pos_data"/>
+    </data>
+</odoo>

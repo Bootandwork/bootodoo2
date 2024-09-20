@@ -1,0 +1,302 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+    <data>
+
+        <record id="powerbi_connector_dashboard_form_view" model="ir.ui.view">
+            <field name="name">powerbi.connector.dashboard.form.view</field>
+            <field name="model">powerbi.connector.dashboard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <field name="color" />
+                    <field name="name" />
+                </form>
+            </field>
+        </record>
+
+        <record id="powerbi_connector_dashboard_kanban_view" model="ir.ui.view">
+            <field name="name">powerbi.connector.dashboard</field>
+            <field name="model">powerbi.connector.dashboard</field>
+            <field name="arch" type="xml">
+                <kanban
+                    create="false"
+                    class="oe_background_grey o_kanban_dashboard">
+                    <field name="color" />
+                    <field name="name" />
+                    <field name='total_count' />
+                    <field name='state' />
+                    <field name='unpublish_count' />
+                    <field name='publish_count' />
+                    <field name="kanban_dashboard_graph_data" />
+                    <templates>
+
+                        <t t-name="kanban-box">
+                            <t t-name="dashboard">
+                                <div
+                                    t-attf-class="#{!selection_mode ? kanban_color(record.color.value) : ''}"
+                                    name="powerbi_dataset">
+                                    <div t-attf-class="o_kanban_card_header">
+                                        <div class="o_kanban_card_header_title">
+                                            <div class="o_primary">
+                                                <field name="name" />
+                                            </div>
+                                            <div class="o_secondary">
+                                            </div>
+                                        </div>
+
+                                        <div class="o_kanban_manage_button_section">
+                                            <a class="o_kanban_manage_toggle_button" href="#">
+                                                <i class="fa fa-ellipsis-v" role="img"
+                                                    aria-label="Manage" title="Manage" />
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="container o_kanban_card_content"
+                                        t-if="!selection_mode">
+                                        <div class="row"
+                                            style='display:flex;flex-direction: row;flex-wrap: nowrap;'>
+                                            <div class="col-6 o_kanban_primary_left" modifiers="{}">
+                                                <div t-if="record.state.raw_value =='workspace'"
+                                                    style="color:rgb(162, 70, 137)">
+                                                    <center modifiers="{}">
+                                                        <i class="fa fa-building-o fa-5x"
+                                                            modifiers="{}" title="Workspaces"></i>
+                                                        <h3 modifiers="{}">Workspaces</h3>
+                                                    </center>
+                                                </div>
+                                                <div t-if="record.state.raw_value =='dataset'"
+                                                    style="color:rgb(162, 70, 137)">
+                                                    <center modifiers="{}">
+                                                        <i class="fa fa-database fa-5x"
+                                                            modifiers="{}" title="Datasets"></i>
+                                                        <h3 modifiers="{}">Datasets</h3>
+                                                    </center>
+                                                </div>
+                                                <div t-if="record.state.raw_value =='table'"
+                                                    style="color:rgb(162, 70, 137)">
+                                                    <center modifiers="{}">
+                                                        <i class="fa fa-table fa-5x" modifiers="{}" title="Tables"></i>
+                                                        <h3 modifiers="{}">Tables</h3>
+                                                    </center>
+                                                </div>
+                                                <div t-if="record.state.raw_value =='report'"
+                                                    style="color:rgb(162, 70, 137)">
+                                                    <center modifiers="{}">
+                                                        <i class="fa fa-file fa-5x" modifiers="{}" title="PowerBI Reports"></i>
+                                                        <h3 modifiers="{}">Power BI Reports</h3>
+                                                    </center>
+                                                </div>
+                                                <div t-if="record.state.raw_value =='dashboard'"
+                                                    style="color:rgb(162, 70, 137)">
+                                                    <center modifiers="{}">
+                                                        <i class="fa fa-dashboard fa-5x"
+                                                            modifiers="{}" title="PowerBI Dashboards"></i>
+                                                        <h3 modifiers="{}">Power BI Dashboards </h3>
+                                                    </center>
+                                                </div>
+                                            </div>
+
+                                            <div>
+                                                <div class="col-6 o_kanban_primary_left">
+                                                    <a
+                                                        class="bg-primary text-white"
+                                                        style="margin-left:-30px;width: 300px;text-align: center;;height:30px;border-radius:5px;padding:5px"
+                                                        name="total_data"
+                                                        type="object">
+                                                        <span><t
+                                                                t-esc="record.total_count.value" />
+                                                            TOTAL</span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 o_kanban_primary_left"
+                                                    style='margin:4px;'>
+                                                    <a class="text-white"
+                                                        style="background-color:#5cb85c;width: 300px;text-align: center;margin-left:-34px;;height:30px;border-radius:5px;padding:5px"
+                                                        context="{'model_name':'powerbi.workspace','name':'Power BI Workspace'}"
+                                                        name="action_publish" type="object"
+                                                        attrs="{'invisible':['|',('state', '=', 'report'),('state', '=', 'dashboard')]}">
+                                                        <span><t
+                                                                t-esc="record.publish_count.value" />
+                                                            PUBLISH</span>
+                                                    </a>
+                                                </div>
+                                                <div class="col-6 o_kanban_primary_left">
+                                                    <a class="text-white"
+                                                        style="margin-left:-30px;background-color:#d9534f;width: 300px;text-align: center;;height:30px;border-radius:5px;padding:5px"
+                                                        context="{'model_name':'powerbi.workspace','name':'Power BI Workspace'}"
+                                                        name="action_unpublish" type="object"
+                                                        attrs="{'invisible':['|',('state', '=', 'report'),('state', '=', 'dashboard')]}">
+                                                        <span><t
+                                                                t-esc="record.unpublish_count.value" />
+                                                            UNPUBLISH</span>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                        <div class="col-12 o_kanban_primary_bottom"
+                                            style="width: 95%;">
+                                            <div>
+                                                <field name="kanban_dashboard_graph_data"
+                                                    graph_type="bar"
+                                                    widget="dashboard_graph" color="red" />
+                                            </div>
+                                        </div>
+                                        <div class="col-12 o_kanban_primary_bottom"
+                                            style="margin-bottom:5px;">
+                                        </div>
+
+                                        <div
+                                            class="container o_kanban_card_manage_pane dropdown-menu"
+                                            role="menu">
+                                            <div t-if="record.state.raw_value =='dataset'"
+                                                class="row">
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                                    <div class="o_kanban_card_manage_title">
+                                                        <span style="color:#a24689">View</span>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn"
+                                                            name="odoo_powerbi_connect.powerbi_dataset_action_tree"
+                                                            type="action">All</button>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn" name="action_publish"
+                                                            type="object"
+                                                            context="{'model_name':'powerbi.dataset','name':'Power BI Dataset'}">
+                                                            Publish</button>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn" name="action_unpublish"
+                                                            type="object"
+                                                            context="{'model_name':'powerbi.dataset','name':'Power BI Dataset'}">
+                                                            Unpublish</button>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                            <div t-if="record.state.raw_value =='workspace'"
+                                                class="row">
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                                    <div class="o_kanban_card_manage_title">
+                                                        <span style="color:#a24689">View</span>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn"
+                                                            name="odoo_powerbi_connect.powerbi_workspace_action_tree"
+                                                            type="action">All</button>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn" name="action_publish"
+                                                            type="object"
+                                                            context="{'model_name':'powerbi.workspace','name':'Power BI Workspace'}">
+                                                            Publish</button>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn" name="action_unpublish"
+                                                            type="object"
+                                                            context="{'model_name':'powerbi.workspace','name':'Power BI Workspace'}">
+                                                            Unpublish</button>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_new">
+                                                </div>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='table'" class="row">
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                                    <div class="o_kanban_card_manage_title">
+                                                        <span style="color:#a24689">View</span>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn"
+                                                            name="odoo_powerbi_connect.powerbi_table_action_tree"
+                                                            type="action">All</button>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn" name="action_publish"
+                                                            type="object"
+                                                            context="{'model_name':'powerbi.table','name':'Power BI Table'}">
+                                                            Publish</button>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn" name="action_unpublish"
+                                                            type="object"
+                                                            context="{'model_name':'powerbi.table','name':'Power BI Table'}">
+                                                            Unpublish</button>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_new">
+
+                                                </div>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='report'"
+                                                class="row">
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                                    <div class="o_kanban_card_manage_title">
+                                                        <span style="color:#a24689">View</span>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn"
+                                                            name="odoo_powerbi_connect.powerbi_report_action_tree"
+                                                            type="action">All</button>
+                                                    </div>
+                                                </div>
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_new">
+                                                </div>
+                                            </div>
+                                            <div t-if="record.state.raw_value =='dashboard'"
+                                                class="row">
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                                    <div class="o_kanban_card_manage_title">
+                                                        <span style="color:#a24689">View</span>
+                                                    </div>
+                                                    <div role="menuitem">
+                                                        <button class="btn"
+                                                            name="odoo_powerbi_connect.powerbi_dashboard_action_tree"
+                                                            type="action">All</button>
+                                                    </div>
+
+                                                </div>
+                                                <div
+                                                    class="col-xs-6 o_kanban_card_manage_section o_kanban_manage_new">
+
+                                                </div>
+                                            </div>
+                                            <div class="o_kanban_card_manage_settings row">
+                                                <div class="col-8" role="menuitem"
+                                                    aria-haspopup="true">
+                                                    <ul class="oe_kanban_colorpicker"
+                                                        data-field="color" role="menu" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+                        </t>
+
+                    </templates>
+                </kanban>
+            </field>
+        </record>
+
+        <record id="powerbi_connector_dashboard_action" model="ir.actions.act_window">
+            <field name="name">Dashboard</field>
+            <field name="res_model">powerbi.connector.dashboard</field>
+            <field name="view_id" ref="powerbi_connector_dashboard_kanban_view" />
+            <field name="view_mode">kanban,form</field>
+        </record>
+
+    </data>
+</odoo>

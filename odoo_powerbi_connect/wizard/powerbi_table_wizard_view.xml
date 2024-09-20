@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+<odoo>
+	<record id="powerbi_table_wizard_form" model="ir.ui.view">
+		<field name="name">powerbi.table.wizard</field>
+		<field name="model">powerbi.table.wizard</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<field name='operation' invisible="1"/>
+					
+					<div attrs="{'invisible':[('operation', 'in', ['update','delete'])]}">
+						Do you really want to export the table data to Power BI</div>
+					<div attrs="{'invisible':[('operation', 'in', ['export','update'])]}">
+						Do you really want to delete the table data from Power BI</div>
+					<div attrs="{'invisible':[('operation', 'in', ['export','delete'])]}">
+						Do you really want to update the table schema at Power BI.
+						<div class='text-warning m-4'><b><u>Warning</u>: </b><i>Updating schema can cause issues in already created reports, you may need to fix the issues manually on Power Bi end itself.
+						After updating Schema the data will be pushed according to new columns, if you want to push all the data with new columns then you first need to delete 
+						the existing data reset last synchronization date and then export the data again</i></div>
+					</div>
+					
+					<footer>
+						<button name="update_table" type="object" class="oe_highlight" string="Confirm"/>
+						<button special="cancel" class="oe_highlight" icon="fa-archive" string="Close" />
+					</footer>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	
+</odoo>

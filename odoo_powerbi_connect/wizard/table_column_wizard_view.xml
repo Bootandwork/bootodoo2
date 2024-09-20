@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+    <data>
+
+        <record id="id_table_column_wizard_view_form" model="ir.ui.view">
+            <field name="name">table.column.wizard.form</field>
+            <field name="model">table.column.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Add Column">
+                    <group>
+						<field name="field_id" 
+                            domain="[('name','!=','id'),('model_id', '=', context.get('domain_model_name')),('id', 'not in', context.get('map_ids')),('ttype','not in',['one2many','many2many'])]"
+                            options="{'no_create':True}" />
+                        <field name="field_type"/>
+                        <field name="label"/>
+					</group>
+                    <footer>
+						<button name="action_add_column"
+                        string="Add Column"
+                        type="object"
+                        class="oe_highlight"/>
+
+                        or
+                        
+						<button string="Cancel" class="oe_link" special="cancel" />
+					</footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

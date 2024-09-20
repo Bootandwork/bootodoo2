@@ -1,0 +1,55 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+,,,,,,,
+access_powerbi_connection_user,Configurantion User,model_powerbi_connection,group_powerbi_user,1,0,0,0
+access_powerbi_message_wizard_user,Powerbi Message Wizard User,model_powerbi_message_wizard,group_powerbi_user,1,0,0,0
+access_powerbi_synchronization_user,Powerbi Synchronization User,model_powerbi_synchronization,group_powerbi_user,1,0,0,0
+access_powerbi_dashboard_user,Powerbi Dashboard User,model_powerbi_dashboard,group_powerbi_user,1,0,0,0
+access_powerbi_report_user,Powerbi Report User,model_powerbi_report,group_powerbi_user,1,0,0,0
+access_powerbi_dataset_user,Powerbi Dataset User,model_powerbi_dataset,group_powerbi_user,1,0,0,0
+access_powerbi_table_user,Powerbi Table User,model_powerbi_table,group_powerbi_user,1,0,0,0
+access_powerbi_workspace_user,Powerbi Workspace User,model_powerbi_workspace,group_powerbi_user,1,0,0,0
+access_powerbi_table_column_user,Powerbi Table Column User,model_powerbi_table_column,group_powerbi_user,1,0,0,0
+access_table_column_wizard_user,Table Column Wizard User,model_table_column_wizard,group_powerbi_user,1,0,0,0
+access_powerbi_wizard_user,Powerbi Wizard User,model_powerbi_wizard,group_powerbi_user,1,0,0,0
+access_powerbi_credentials_wizard_user,Powerbi Credentials Wizard User,model_powerbi_credentials_wizard,group_powerbi_user,1,0,0,0
+access_powerbi_unpublish_message_wizard_user,Powerbi Unpublish Message Wizard User,model_unpublish_message_wizard,group_powerbi_user,1,0,0,0
+access_powerbi_connector_dashboard_user,Powerbi Connector Dashboard User,model_powerbi_connector_dashboard,group_powerbi_user,1,0,0,0
+access_powerbi_table_wizard_user,Powerbi Table Wizard User,model_powerbi_table_wizard,group_powerbi_user,1,0,0,0
+access_powerbi_table_cron_user,Powerbi Table Cron User,base.model_ir_cron,group_powerbi_user,1,0,0,0
+
+,,,,,,,
+access_powerbi_connection_manager,Configurantion Manager,model_powerbi_connection,group_powerbi_manager,1,1,1,1
+access_powerbi_message_wizard_manager,Powerbi Message Wizard Manager,model_powerbi_message_wizard,group_powerbi_manager,1,1,1,1
+access_powerbi_synchronization_manager,Powerbi Synchronization Manager,model_powerbi_synchronization,group_powerbi_manager,1,1,1,1
+access_powerbi_dashboard_manager,Powerbi Dashboard Manager,model_powerbi_dashboard,group_powerbi_manager,1,1,1,1
+access_powerbi_report_manager,Powerbi Report Manager,model_powerbi_report,group_powerbi_manager,1,1,1,1
+access_powerbi_dataset_manager,Powerbi Dataset Manager,model_powerbi_dataset,group_powerbi_manager,1,1,1,1
+access_powerbi_table_manager,Powerbi Table Manager,model_powerbi_table,group_powerbi_manager,1,1,1,1
+access_powerbi_workspace_manager,Powerbi Workspace Manager,model_powerbi_workspace,group_powerbi_manager,1,1,1,1
+access_powerbi_table_column_manager,Powerbi Table Column Manager,model_powerbi_table_column,group_powerbi_manager,1,1,1,1
+access_table_column_wizard_manager,Table Column Wizard Manager,model_table_column_wizard,group_powerbi_manager,1,1,1,1
+access_powerbi_wizard_manager,Powerbi Wizard Manager,model_powerbi_wizard,group_powerbi_manager,1,1,1,1
+access_powerbi_credentials_wizard_manager,Powerbi Credentials Wizard Manager,model_powerbi_credentials_wizard,group_powerbi_manager,1,1,1,1
+access_powerbi_unpublish_message_wizard_manager,Powerbi Unpublish Message Wizard Manager,model_unpublish_message_wizard,group_powerbi_manager,1,1,1,1
+access_powerbi_connector_dashboard_manager,Powerbi Connector Dashboard Manager,model_powerbi_connector_dashboard,group_powerbi_manager,1,1,1,1
+access_powerbi_table_wizard_manager,Powerbi Table Wizard Manager,model_powerbi_table_wizard,group_powerbi_manager,1,1,1,1
+
+,,,,,,,
+access_powerbi_connection_officer,Configurantion Officer,model_powerbi_connection,group_powerbi_officer,1,1,1,0
+access_powerbi_message_wizard_officer,Powerbi Message Wizard officer,model_powerbi_message_wizard,group_powerbi_officer,1,1,1,0
+access_powerbi_synchronization_officer,Powerbi Synchronization Officer,model_powerbi_synchronization,group_powerbi_officer,1,1,1,0
+access_powerbi_dashboard_officer,Powerbi Dashboard Officer,model_powerbi_dashboard,group_powerbi_officer,1,1,1,0
+access_powerbi_report_officer,Powerbi Report Officer,model_powerbi_report,group_powerbi_officer,1,1,1,0
+access_powerbi_dataset_officer,Powerbi Dataset Officer,model_powerbi_dataset,group_powerbi_officer,1,1,1,0
+access_powerbi_table_officer,Powerbi Table Officer,model_powerbi_table,group_powerbi_officer,1,1,1,0
+access_powerbi_workspace_officer,Powerbi Workspace Officer,model_powerbi_workspace,group_powerbi_officer,1,1,1,0
+access_powerbi_table_column_officer,Powerbi Table Column Officer,model_powerbi_table_column,group_powerbi_officer,1,1,1,0
+access_table_column_wizard_officer,Table Column Wizard Officer,model_table_column_wizard,group_powerbi_officer,1,1,1,0
+access_powerbi_wizard_officer,Powerbi Wizard Officer,model_powerbi_wizard,group_powerbi_officer,1,1,1,0
+access_powerbi_credentials_wizard_officer,Powerbi Credentials Wizard Officer,model_powerbi_credentials_wizard,group_powerbi_officer,1,1,1,0
+access_powerbi_unpublish_message_wizard_officer,Powerbi Unpublish Message Wizard Officer,model_unpublish_message_wizard,group_powerbi_officer,1,1,1,0
+access_powerbi_connector_dashboard_officer,Powerbi Connector Dashboard Officer,model_powerbi_connector_dashboard,group_powerbi_officer,1,1,1,0
+access_powerbi_table_wizard_officer,Powerbi Table Wizard Officer,model_powerbi_table_wizard,group_powerbi_officer,1,1,1,0
+access_powerbi_table_cron_officer,Powerbi Table Cron Officer,base.model_ir_cron,group_powerbi_officer,1,1,1,0
+access_powerbi_table_model_officer,Powerbi Table Model Officer,base.model_ir_model,group_powerbi_officer,1,1,1,0
+access_powerbi_table_field_officer,Powerbi Table field Officer,base.model_ir_model_fields,group_powerbi_officer,1,1,1,0

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+    <data>
+
+        <record id="powerbi_workspace_view_form" model="ir.ui.view">
+            <field name="name">powerbi.workspace.view.form</field>
+            <field name="model">powerbi.workspace</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Power BI Workspace">
+                    <header>
+                        <button name="action_publish"
+                                type="object"
+                                string="Publish"
+                                class="btn"
+                                attrs="{'invisible': [('state','=','published')]}"/>
+                        <field name="state" widget="statusbar"/>
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button name="action_redirect" type="object" class="oe_stat_button" 
+                                    context="{'model_name':'powerbi.dataset','name':'Dataset'}" icon="fa-list-ul"> 
+                                <field name="count_total_dataset" widget="statinfo" string="Datasets"/>
+                            </button>
+                        
+                            <button name="action_redirect" type="object" class="oe_stat_button"
+                                    context="{'model_name':'powerbi.report','name':'Reports'}"  icon="fa-list-ul"> 
+                                <field name="count_total_report" widget="statinfo" string="Reports"/>
+                            </button>
+
+                            <button name="action_redirect" type="object" class="oe_stat_button"
+                                    context="{'model_name':'powerbi.dashboard','name':'Dashboards'}"  icon="fa-list-ul"> 
+                                <field name="count_total_dashboard" widget="statinfo" string="Dashboards"/>
+                            </button>
+                        </div>
+                        <group>
+                            <group>
+                            
+                                <field name="name"/> 
+                                <field name="default_workspace"/>
+                                <field name="is_published" invisible='1'/>
+                                <field name="powerbi_id" attrs="{'invisible':['|',('default_workspace','=',True),('is_published', '=', False)]}"/>
+                            </group>
+                            <group>
+                            
+                                <field name="responsible_user" create='0'/>
+                                <field name="create_uid" readonly="1"/>
+                                <field name="create_date" readonly="1"/>
+                                <field name="write_date"/>
+                            </group>
+                        </group>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="powerbi_workspace_view_tree" model="ir.ui.view">
+            <field name="name">powerbi.workspace.view.tree</field>
+            <field name="model">powerbi.workspace</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Power BI Workspaces">
+                    <field name="name"/>
+                    <field name="state"
+                        decoration-success="state == 'published'"
+                        decoration-info="state == 'topublish'"
+                        widget="badge" optional="show"/>
+                    <field name="responsible_user" />
+                    <field name="default_workspace"/>
+                    <field name="create_date"/>
+                    <field name="create_uid" widget="many2one_avatar_user"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="powerbi_workspace_view_search" model="ir.ui.view">
+            <field name="name">powerbi.workspace.view.search</field>
+            <field name="model">powerbi.workspace</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="Published" name="publish" domain="[('is_published','=',True)]"/>
+                    <filter string="To Publish" name="topublish" domain="[('is_published','=',False)]"/>
+                    <filter string="Default" name="default" domain="[('default_workspace','=',True)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Responsible" name="group_by_responsible" context="{'group_by':'responsible_user'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="powerbi_workspace_action_tree" model="ir.actions.act_window">
+            <field name="name">Power BI Workspace</field>
+            <field name="res_model">powerbi.workspace</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="powerbi_workspace_view_tree"/>
+        </record>
+
+    </data>
+</odoo>

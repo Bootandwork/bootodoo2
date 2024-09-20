@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+    <data>
+
+        <record id="id_powerbi_wizard_view_form" model="ir.ui.view">
+            <field name="name">powerbi.wizard.form.view</field>
+            <field name="model">powerbi.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Import">
+                    <group>
+                        <field name="workspace_id" required="1"/>
+                    </group>
+                    <footer>
+						<button name="action_import_report"
+                            string="Import"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="not context.get('report') == True"/>
+                        <button name="action_import_dashboard"
+                            string="Import"
+                            type="object"
+                            class="oe_highlight"
+                            invisible="not context.get('dashboard') == True"/>
+						<button string="Cancel"  class="oe_highlight" special="cancel" />
+					</footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="id_powerbi_wizard_export_data_form" model="ir.ui.view">
+            <field name="name">powerbi.wizard.export.data.view</field>
+            <field name="model">powerbi.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Export">
+                    <group>
+                        <field name="exp_workspace_id" attrs="{'required': True}"/>
+                        <field name="exp_table_id"
+                            attrs="{'invisible': [('exp_workspace_id', '=', False)], 'required': [('exp_workspace_id', '!=', False)]}"/>
+                    </group>
+                    <footer>
+						<button name="action_export"
+                            string="Export"
+                            type="object"
+                            class="oe_highlight"
+                        />
+						<button string="Cancel" class="oe_highlight" special="cancel" />
+					</footer>
+                </form>
+            </field>
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+    <data>
+        <record id="powerbi_connection_form" model="ir.ui.view">
+            <field name="name">powerbi.connection.form</field>
+            <field name="model">powerbi.connection</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Power BI Connection Instance">
+                    <header>
+                        <button name="test_powerbi_connection"
+                            type='object'
+                            icon="fa-pencil-square-o"
+                            class="oe_highlight o_wow"
+                            string='Test Connection'
+                            attrs="{'invisible':[('connection_status', '=', True)]}" />
+                        <button name="reset_powerbi_connection"
+                            type='object'
+                            icon="fa-pencil-square-o"
+                            class="oe_highlight o_wow"
+                            string='Reset Connection'
+                            attrs="{'invisible':[('connection_status', '!=', True)]}" />
+
+                        <field name="state" widget="statusbar" />
+
+
+                    </header>
+                    <sheet>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object"
+                                name="configure_cron"
+                                string='Configure Cron'
+                                class="oe_stat_button"
+                                icon="fa-cogs"
+                            />
+                            <button name="toggle_active" type="object" class="oe_stat_button">
+                                <span class="fa fa-check" attrs="{'invisible': [('active','=', False)]}"/>
+                                <span class="fa fa-close" attrs="{'invisible': [('active','=', True)]}"/>
+                                <field name="active" widget="boolean_button"
+                                    options='{"terminology": "active"}' />
+                                <span attrs="{'invisible': [('active','=', False)]}">Active</span>
+                                <span attrs="{'invisible': [('active','=', True)]}">Inactive</span>
+                            </button>
+                        </div>
+                        <widget name="web_ribbon" text="Connected"
+                            attrs="{'invisible': [('connection_status','!=', True)]}" />
+                        <widget name="web_ribbon" text="Not Connected" bg_color="bg-danger"
+                            attrs="{'invisible': [('connection_status','!=', False)]}" />
+
+                        <div class="badge badge-danger"
+                            attrs="{'invisible': [('state','!=', 'failed')]}">
+                            error
+                        </div>
+
+                        <h3>
+                            <field name="status" attrs="{'invisible': [('state','!=', 'failed')]}" />
+                        </h3>
+                        <div class="oe_horizontal_separator oe_clear ">
+                            <separator string="Power BI Settings" />
+                        </div>
+                        <group>
+                            <field name="api_url" />
+                            <field name="authority_url" />
+                            <field name="access_method" invisible="1" />
+                            <field name="connection_status" invisible="1" />
+                        </group>
+                        <a
+                            href="https://docs.microsoft.com/en-us/power-bi/developer/embedded/embed-service-principal"
+                            target="_blank">How to setup a service principle for your azure AD app.</a>
+                        <notebook>
+                            <page string="Imports"
+                                attrs="{'invisible': [('connection_status','=', False)]}">
+
+                                <button name="open_report_wizard"
+                                    class="btn btn-primary"
+                                    type='object'
+                                    string='Import Reports'
+                                />
+                                <span style='margin:10px'>
+                                    <button name="open_dashboard_wizard"
+                                        type='object'
+                                        class="btn btn-primary"
+                                        style='margin:10px'
+                                        string='Import Dashboards'
+                                    />
+                                </span>
+
+                                <button name="action_import_workspace"
+                                    type='object'
+                                    class="btn btn-primary"
+                                    string='Import Workspaces'
+                                />
+                            </page>
+                            <page string="Power BI User Credentials"
+                                attrs="{'invisible': [('access_method','!=', 'mu')]}">
+
+                                <div class="row mt16 o_settings_container">
+                                    <div class="col-xs-12 col-md-6 o_setting_box">
+                                        <div class="o_setting_right_pane">
+                                            <label string="User Name" for="user" />
+                                            <div class="text-muted">
+                                                Power BI account username.
+                                            </div>
+                                            <div>
+                                                <field name="user" placeholder="Example: user"
+                                                    attrs="{'required':[('access_method','=','mu')],'readonly': [('connection_status', '=', True)]}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6 o_setting_box"
+                                        attrs="{'invisible': [('id','!=',False)]}">
+                                        <div class="o_setting_right_pane">
+                                            <label string="Password" for="pwd" />
+                                            <div class="text-muted">
+                                                Power BI account password.
+                                            </div>
+                                            <div>
+                                                <field name="pwd" placeholder="Example: password"
+                                                    password="True"
+                                                    attrs="{'required':[('access_method','=','mu'),('id','=',False)]}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6 o_setting_box"
+                                        attrs="{'invisible': [('id','=',False)]}">
+                                        <div class="o_setting_right_pane">
+                                            <div class="text-muted">
+                                                Click here to update the credential
+                                            </div>
+                                            <button name="update_credentials"
+                                                string="Update Credentials" type="object"
+                                                class="btn-success" icon="fa-edit"
+                                                attrs="{'invisible': [('id','=',False)]}" />
+                                        </div>
+                                    </div>
+                                </div>
+                               
+                            </page>
+                            <page string="App Credentials">
+                                <h2
+                                    style="margin-top: 10px !important;background-color: #e9ecef;padding-left: 8px;">
+                                    App Credentials
+                                </h2>
+                                <div class="row mt16 o_settings_container">
+                                    <div class="col-xs-12 col-md-6 o_setting_box">
+                                        <div class="o_setting_right_pane">
+                                            <label string="Client Id" for="client_id" />
+                                            <div class="text-muted">
+                                                Client/Application id of application you have
+                                                registered on Azure Active Directory.
+                                            </div>
+                                            <div>
+                                                <field name="client_id"
+                                                    placeholder="Example: client id" required='1'
+                                                    attrs="{'readonly': [('connection_status', '=', True)]}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6 o_setting_box">
+                                        <div class="o_setting_right_pane">
+                                            <label string="Client Secret" for="client_secret" />
+                                            <div class="text-muted">
+                                                Client/Application secret of application you get
+                                                after registering the application.
+                                            </div>
+                                            <div>
+                                                <field name="client_secret"
+                                                    placeholder="Example: client secret"
+                                                    required='1'
+                                                    attrs="{'readonly': [('connection_status', '=', True)]}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6 o_setting_box">
+                                        <div class="o_setting_right_pane">
+                                            <label string="Tenent Id" for="tenent_id" />
+                                            <div class="text-muted">
+                                                Tenent id of your organization's azure account.
+                                            </div>
+                                            <div>
+                                                <field name="tenent_id"
+                                                    placeholder="Example: tenent id" required='1'
+                                                    attrs="{'readonly': [('connection_status', '=', True)]}" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-12 col-md-6 o_setting_box">
+                                        <div class="o_setting_right_pane">
+                                            <label string="Redirect URI" for="redirect_uri" />
+                                            <div class="text-muted"> You should use this URI while registering your app on Azure portal.
+                                            </div>
+                                            <div>
+                                                <field name="redirect_uri"
+                                                    placeholder="Example: redirect uri"
+                                                    readonly="1"/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="powerbi_connection_tree" model="ir.ui.view">
+            <field name="name">powerbi.connection.tree</field>
+            <field name="model">powerbi.connection</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Power BI Connection Instances">
+                    <field name="instance" />
+                    <field name="user" />
+                    <field name="active" />
+                    <field name="connection_status" optional="hide" />
+                    <field name="state"
+                        decoration-success="state == 'connected'"
+                        decoration-info="state == 'draft'"
+                        decoration-danger="state == 'failed'"
+                        widget="badge" optional="show" />
+                    <field name="create_date" />
+                    <field name="create_uid" widget="many2one_avatar_user" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="powerbi_connection_tree_action" model="ir.actions.act_window">
+            <field name="name">Power BI Connection</field>
+            <field name="res_model">powerbi.connection</field>
+            <field name="view_mode">tree,form</field>
+            <field name="help" type="html">
+                <p class="o_view_nocontent_smiling_face">
+                    Click to define a new connection.
+                </p>
+                <p>
+                    Odoo Power BI Connector will connect your powerbi account to odoo. You can sync
+                    your data from odoo to powerbi and then create reports and graph for analysis.
+                </p>
+            </field>
+            <field name="view_id" ref="powerbi_connection_tree" />
+        </record>
+
+    </data>
+</odoo>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+    <data>
+
+        <record id="powerbi_table_view_form" model="ir.ui.view">
+            <field name="name">powerbi.table.view.form</field>
+            <field name="model">powerbi.table</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form string="Power BI Table">
+                    <header>
+                        <button name="action_export"
+                            type="object"
+                            string="Export Data"
+                            class="btn"
+                            attrs="{'invisible': ['|',('state','!=','published'),('is_modified','=',True)]}" />
+                        <button name="action_delete"
+                            type="object"
+                            string="Delete Data"
+                            class="btn"
+                            attrs="{'invisible': [('state','!=','published')]}" />
+                        <button name="action_update_schema"
+                            type="object"
+                            string="Update Schema"
+                            class="btn"
+                            attrs="{'invisible': ['|',('state','!=','published'),('is_modified','=',False)]}" />
+                        <field name="state" widget="statusbar" />
+                    </header>
+                    <sheet>
+                        <field name="is_modified" invisible="1"/>
+                        <div class="oe_button_box" name="button_box">
+                            <button type="object"
+                                name="create_server_action"
+                                string='Add Server Action'
+                                class="oe_stat_button"
+                                icon="fa-server"
+                                attrs="{'invisible': ['|',('state','!=','published'),('export_action','>',0)]}"
+                            />
+                            <button type="object"
+                                name="delete_server_action"
+                                string='Delete Server Action'
+                                class="oe_stat_button"
+                                icon="fa-trash"
+                                attrs="{'invisible': ['|',('state','!=','published'),('export_action','=',0)]}"
+                            />
+                            <button class="oe_stat_button text-success"
+                                icon="fa-check" attrs="{'invisible': [('is_modified','=',True)]}">
+                                <span >Validated</span>
+                            </button>
+                             <button class="oe_stat_button text-danger"
+                                icon="fa-close" attrs="{'invisible': [('is_modified','=',False)]}">
+                                <span >Need Update</span>
+                            </button>
+
+                        </div>
+                        <group>
+                            <group>
+                                <field name="name" />
+                                <field name="dataset_id" />
+                                <field name="model_id" options="{'no_create':True}" />
+                                <field name="run_cron" />
+                                <field name="last_sync_datetime" />
+                            </group>
+                            <group>
+                                <field name="create_uid" readonly="1" />
+                                <field name="create_date" readonly="1" />
+                                <field name="write_date" />
+                                <field name="model_name" invisible="1" />
+                                <field name="export_action" invisible="1" />
+                                 <field name="is_published" invisible="1" />
+                                <field name="use_relation" attrs="{'readonly': [('is_published','=',True)]}"/>
+                            </group>
+
+                        </group>
+                        <notebook>
+                            <page string="Columns" name="columns">
+                                <button name="open_column_wizard"
+                                    type="object"
+                                    string="Add Column" />
+                                <field name="column_ids" options="{'no_open': True}">
+                                    <tree create="false" edit="false">
+                                        <field name="name" />
+                                        <field name="field_id" />
+                                        <field name="label"/>
+                                        <field name="field_type" />
+                                    </tree>
+                                </field>
+                            </page>
+                            <page string="Filter Detail">
+                                <group>
+
+                                    <field name="filter_domain" widget="domain"
+                                        options="{'model': 'model_name'}" />
+                                </group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" />
+                        <field name="message_ids" widget="mail_thread" />
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="powerbi_table_view_tree" model="ir.ui.view">
+            <field name="name">powerbi.table.view.tree</field>
+            <field name="model">powerbi.table</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="Power BI Table">
+                    <field name="name" />
+                    <field name="dataset_id" />
+                    <field name="state"
+                        decoration-success="state == 'published'"
+                        decoration-info="state == 'topublish'"
+                        widget="badge" optional="show" />
+                    <field name="model_id" />
+                    <field name="create_date" />
+                    <field name="create_uid" widget="many2one_avatar_user" />
+                </tree>
+            </field>
+        </record>
+
+        <record id="powerbi_table_view_search" model="ir.ui.view">
+            <field name="name">powerbi.table.view.search</field>
+            <field name="model">powerbi.table</field>
+            <field name="arch" type="xml">
+                <search>
+                    <filter string="Published" name="publish" domain="[('is_published','=',True)]"/>
+                    <filter string="To Publish" name="topublish" domain="[('is_published','=',False)]"/>
+                    <group expand="0" string="Group By">
+                        <filter string="Dataset" name="group_by_dataset" context="{'group_by':'dataset_id'}"/>
+                        <filter string="Model" name="group_by_model" context="{'group_by':'model_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="powerbi_table_action_tree" model="ir.actions.act_window">
+            <field name="name">Power BI Table</field>
+            <field name="res_model">powerbi.table</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="powerbi_table_view_tree" />
+        </record>
+
+    </data>
+</odoo>

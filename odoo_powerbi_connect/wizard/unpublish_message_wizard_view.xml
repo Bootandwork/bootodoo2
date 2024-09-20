@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2015-Present Webkul Software Pvt. Ltd. (<https://webkul.com/>) -->
+<!-- See LICENSE file for full copyright and licensing details. -->
+<!-- "License URL : <https://store.webkul.com/license.html/>" -->
+
+<odoo>
+	<record id="unpublish_wizard_form2" model="ir.ui.view">
+		<field name="name">unpublish.message.wizard</field>
+		<field name="model">unpublish.message.wizard</field>
+		<field name="type">form</field>
+		<field name="arch" type="xml">
+			<form>
+				<sheet>
+					<group>
+						<field name='dataset_operation' widget='radio'/>
+					</group>
+					<div class="text-warning" attrs="{'invisible':[('dataset_operation', '=', 'delete')]}">
+						The dataset will be unlinked from the Power Bi dataset but the dataset on the Power Bi end will not be affected.<br></br>
+						Upon publishing the dataset again a new dataset will be created on Power Bi.
+					</div>
+					<div class="text-warning" attrs="{'invisible':[('dataset_operation', '=', 'unlink')]}">
+						The dataset will be unlinked from the Power Bi dataset and the dataset on the Power Bi will get deleted with all its tables and data in it.<br></br>
+						Upon publishing the dataset again a new dataset will be created on Power Bi.
+					</div><br></br>
+					<group>
+						<field name='reason'/>
+					</group>
+						
+					<footer>
+						<button name="unpublish_dataset" type="object" class="oe_highlight" string="Confirm">
+						</button>
+						<button special="cancel" class="oe_highlight" icon="fa-archive" string="Close"/>
+					</footer>
+				</sheet>
+			</form>
+		</field>
+	</record>
+	
+</odoo>
