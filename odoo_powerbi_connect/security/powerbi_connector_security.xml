@@ -97,7 +97,7 @@
             <field name='model_id' ref="model_powerbi_report" />
             <field name='groups' eval="[(4,ref('group_powerbi_user'))]"></field>
             <field name='domain_force'>
-                ['|',('message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field>
+                ['|',('workspace_id.message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field>
         </record>
 
          <record id="rule_powerbi_manager_dashboard" model="ir.rule">
@@ -113,7 +113,7 @@
             <field name='model_id' ref="model_powerbi_dashboard" />
             <field name='groups' eval="[(4,ref('group_powerbi_user'))]"></field>
             <field name='domain_force'>
-                ['|',('message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field>
+                ['|',('workspace_id.message_partner_ids','in',[user.partner_id.id]),('workspace_id.responsible_user.name','=',user.name)]</field>
         </record>
 
     </data>
