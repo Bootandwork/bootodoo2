@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="website_config_settings_view_form" model="ir.ui.view">
+        <field name="name">website.config.settings.view.form.inherit.website_google_analytics_4</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='google_analytics_setting']" position="after">
+                <div class="col-12 col-lg-6 o_setting_box" id="google_analytics_4_setting">
+                    <div class="o_setting_left_pane">
+                        <field name="has_google_analytics_4"/>
+                    </div>
+                    <div class="o_setting_right_pane">
+                        <label for="has_google_analytics_4" string="Google Analytics 4 (Alternative Tracking)"/>
+                        <span class="fa fa-lg fa-globe" title="Values set here are website-specific." groups="website.group_multi_website"/>
+                        <div class="text-muted">
+                            Use a new Google Analytics 4 to track website activities
+                        </div>
+                        <div class="content-group" attrs="{'invisible': [('has_google_analytics_4', '=', False)]}">
+                            <div class="row mt16">
+                                <label class="col-lg-3 o_light_label" string="Tracking ID" for="ga4_tracking_key"/>
+                                <field name="ga4_tracking_key" placeholder="G-XXXXXXXXXX" attrs="{'required': [('has_google_analytics_4', '=', True)]}"/>
+                                <label class="col-lg-3 o_light_label" string="Debug Mode" for="ga4_debug_mode"/>
+                                <field name="ga4_debug_mode"/>
+                            </div>
+                        </div>
+                        <div attrs="{'invisible': [('has_google_analytics_4', '=', False)]}" name="google_analytics_4_help">
+                            <a href="https://support.google.com/analytics/answer/10089681" class="oe_link" target="_blank">
+                                <i class="fa fa-arrow-right"/> How to get started with the new Google Analytics 4
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

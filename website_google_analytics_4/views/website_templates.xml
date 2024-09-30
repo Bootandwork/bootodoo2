@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="layout" name="Website GA4 Base Script" inherit_id="website.layout">
+        <xpath expr="//head" position="inside">
+            <!-- Global site tag (gtag.js) - Google Analytics -->
+            <t t-if="website and website.ga4_get_primary_key() and request.env['ir.http']._is_allowed_cookie('optional') and not editable" name="ga4_script">
+                <script id="google_analytics_4_code" async="1" t-attf-src="https://www.googletagmanager.com/gtag/js?id={{ website.ga4_get_primary_key() }}"/>
+                <script>
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    <t t-foreach="website._ga4_configs()" t-as="config">
+                    gtag('config', '<t t-esc="config['key']"/>', <t t-out="json.dumps(config['params'])"/>);
+                    </t>
+                </script>
+            </t>
+        </xpath>
+    </template>
+
+</odoo>

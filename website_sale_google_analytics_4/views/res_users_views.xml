@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_generate_ga4_user_id" model="ir.actions.server">
+        <field name="name">Regenerate random User ID for GA4</field>
+        <field name="model_id" ref="model_res_users"/>
+        <field name="state">code</field>
+        <field name="code">
+            for rec in records:
+                rec.write({'ga4_ref': model._default_ga4_ref()})
+        </field>
+        <field name="groups_id" eval="[(4, ref('website.group_website_designer'))]"/>
+        <field name="binding_model_id" ref="base.model_res_users"/>
+        <field name="binding_view_types">list,form</field>
+    </record>
+
+</odoo>

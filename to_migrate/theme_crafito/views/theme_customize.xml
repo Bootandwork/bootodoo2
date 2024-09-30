@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="theme_customize" inherit_id="website.theme_customize">
+        <xpath expr="//div" position="replace">
+            <div>
+                <!-- Layout Options -->
+                <content id="theme_customize_content_layout" string="Layout" title="Choose your Layout">
+                    <more data-depends="">
+                        <list string="Body">
+                            <opt string="Full" data-xmlid="" data-icon="/website/static/src/img/options/layout-full.png"/>
+                            <opt id="option_layout_boxed" string="Boxed" data-xmlid="website.option_layout_boxed_variables" data-icon="/website/static/src/img/options/layout-boxed.png"/>
+                        </list>
+                        <list string="Background">
+                            <opt id="option_no_background" string="None" data-xmlid=""/>
+                            <opt string="Choose an image" data-xmlid="website.option_custom_body_image"/>
+                            <opt string="Choose a pattern" data-xmlid="website.option_custom_body_image, website.option_custom_body_pattern"/>
+                        </list>
+                    </more>
+                </content>
+                <content id="theme_customize_content_colors" string="Colors" title="Choose Theme Color">
+                    <opt data-widget="color" data-color-type="crafito_primary" data-color="crafito_primary" string="Choose your colors" id="cust_color_palate"/>
+                    <opt data-widget="color" data-color-type="crafito_secondary" data-color="crafito_secondary" string="Choose your colors" id="crafito_secondary_color_palate"/>
+                </content>
+                 <!-- Font options -->
+                <content id="theme_customize_content_fonts" string="Fonts" title="Choose your fonts">
+                    <list string="Title">
+                        <fontselection data-variable="headings-font-number"/>
+                    </list>
+                    <list string="Body">
+                        <fontselection data-variable="font-number"/>
+                    </list>
+                    <list string="Button">
+                        <fontselection data-variable="buttons-font-number"/>
+                    </list>
+                    <list string="Navbar">
+                        <fontselection data-variable="navbar-font-number"/>
+                    </list>
+                </content>
+                <!-- Menu options -->
+                <content id="theme_customize_content_navbar" string="Navbar" title="Choose your navbar">
+                    <list string="Main Layout">
+                        <!-- <checkbox><opt data-xmlid="website.affix_top_menu" data-reload="/"/></checkbox> -->
+                        <checkbox><opt data-xmlid="theme_crafito.crafito_header_sign_in" data-reload="/"/></checkbox>
+                        <!-- <opt data-widget="input" data-unit="rem" data-variable="header-font-size" string="Font Size"/> -->
+                    </list>
+                    <list string="Logo">
+                        <checkbox><opt data-xmlid="theme_crafito.crafito_layout_logo_show" data-reload="/"/></checkbox>
+                        <opt data-widget="input" data-unit="rem" data-variable="logo-height" string="Logo Height"/>
+                    </list>
+                </content>
+            </div>
+        </xpath>
+    </template>
+</odoo>

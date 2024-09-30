@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="website_config_settings_view_form" model="ir.ui.view">
+        <field name="name">website.config.settings.view.form.inherit.website_sale_tracking_base</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="website.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[@id='website_email_marketing']" position="after">
+                <h2>Tracking</h2>
+                <div class="row mt16 o_settings_container" id="website_tracking_setting" attrs="{'invisible': [('website_id', '=', False)]}">
+                    <div class="col-12 col-lg-6 o_setting_box" id="website_sale_tracking_base_setting">
+                        <div class="o_setting_left_pane">
+                            <field name="website_tracking_is_active"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="website_tracking_is_active"/>
+                            <span class="fa fa-lg fa-globe" title="Values set here are website-specific." groups="website.group_multi_website"/>
+                            <div class="text-muted">
+                                Track eCommerce customer events on the website.
+                            </div>
+                            <div class="content-group" id="tracking_settings" attrs="{'invisible': [('website_tracking_is_active', '=', False)]}">
+                                <div class="row mt16">
+                                    <label class="col-lg-3 o_light_label text-nowrap" string="Debug Logging" for="website_tracking_is_logged"/>
+                                    <field name="website_tracking_is_logged" class="oe_inline"/>
+                                </div>
+                            </div>
+                            <div class="mt8">
+                                <button type="action" name="%(action_tracking_service_list)d" string="Manage Tracking Services" class="btn-link" icon="fa-arrow-right"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+</odoo>

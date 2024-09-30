@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="website_tracking_log_view_form" model="ir.ui.view">
+        <field name="name">website.tracking.log.view.form</field>
+        <field name="model">website.tracking.log</field>
+        <field name="arch" type="xml">
+            <form create="false" duplicate="false">
+                <header>
+                    <button name="action_send_event"
+                            type="object"
+                            class="btn-primary"
+                            string="Send Event"
+                            groups="base.group_system"
+                            title="Technical feature for testing."
+                            attrs="{'invisible': ['|', ('channel', '=', 'js_script'), ('state', 'in', ['sent'])]}"
+                    />
+                    <field name="state" widget="statusbar" statusbar_visible="sent" attrs="{'invisible': [('channel', '=', 'js_script')]}"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="service_id"/>
+                            <field name="event_type"/>
+                            <field name="channel" attrs="{'invisible': [('channel', '=', 'js_script')]}"/>
+                        </group>
+                        <group>
+                            <field name="create_date"/>
+                            <field name="visitor_id"/>
+                            <field name="order_id"/>
+                        </group>
+                    </group>
+                    <group attrs="{'invisible': [('event_type', '!=', 'search_product')]}">
+                        <field name="search_term" />
+                    </group>
+                    <notebook>
+                        <page string="Products" attrs="{'invisible': [('product_ids', '=', [])]}">
+                            <field name="product_ids"/>
+                        </page>
+                        <page string="Payload" groups="base.group_no_one">
+                            <field name="payload_preview" widget="ace" options="{'mode': 'python'}"/>
+                        </page>
+                        <page string="Technical">
+                            <group>
+                                <field name="url" widget="url"/>
+                            </group>
+                            <group attrs="{'invisible': [('channel', '=', 'js_script')]}">
+                                <field name="api_sent_date"/>
+                                <field name="api_response"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="website_tracking_log_view_tree" model="ir.ui.view">
+        <field name="name">website.tracking.log.view.tree</field>
+        <field name="model">website.tracking.log</field>
+        <field name="arch" type="xml">
+            <tree create="false" duplicate="false"
+                  decoration-muted="event_type in ['view_product', 'view_product_list']"
+                  decoration-it="event_type=='add_to_wishlist'"
+                  decoration-bf="event_type=='add_to_cart' or event_type=='purchase'"
+                  decoration-info="event_type=='begin_checkout'"
+                  decoration-primary="event_type=='add_shipping_info'"
+                  decoration-warning="event_type=='add_payment_info'"
+                  decoration-success="event_type in ['purchase', 'purchase_portal']"
+                  decoration-danger="state=='error'"
+            >
+                <field name="create_date"/>
+                <field name="channel" optional="hide"/>
+                <field name="event_type"/>
+                <field name="service_id" optional="show"/>
+                <field name="search_term" optional="hide"/>
+                <field name="visitor_id" optional="hide"/>
+                <field name="product_id" optional="hide"/>
+                <field name="product_ids" widget="many2many_tags" optional="hide"/>
+                <field name="order_id" optional="hide"/>
+                <field name="website_id" groups="website.group_multi_website" optional="hide"/>
+                <field name="payload" optional="hide"/>
+                <field name="state" optional="hide"/>
+                <field name="api_sent_date" optional="hide"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="website_tracking_log_view_search" model="ir.ui.view">
+        <field name="name">website.tracking.log.view.search</field>
+        <field name="model">website.tracking.log</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="event_type" filter_domain="[('event_type', 'ilike', self)]"/>
+                <field name="service_id" filter_domain="[('service_id.name', 'ilike', self)]"/>
+                <separator/>
+                <filter string="Date" name="filter_date" date="create_date" default_period="this_month"/>
+                <group expand="0">
+                    <filter name="group_by_create_date" string="Date" domain="[]" context="{'group_by': 'create_date:day'}"/>
+                    <separator/>
+                    <filter name="group_by_event_type" domain="[]" context="{'group_by': 'event_type'}"/>
+                    <filter name="group_by_service_type" string="Service Type" domain="[]" context="{'group_by': 'service_type'}"/>
+                    <filter name="group_by_service_id" domain="[]" context="{'group_by': 'service_id'}"/>
+                    <filter name="group_by_product_id" domain="[('product_id', '!=', False)]" context="{'group_by': 'product_id'}"/>
+                </group>
+                <searchpanel view_types="list,graph">
+                    <field name="event_type" select="multi" icon="fa-mouse-pointer" />
+                    <field name="service_type" string="Service Type" select="multi" icon="fa-bar-chart" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <record id="website_tracking_log_view_graph" model="ir.ui.view">
+        <field name="name">website.tracking.log.view.graph</field>
+        <field name="model">website.tracking.log</field>
+        <field name="arch" type="xml">
+            <graph type="bar" stacked="0" sample="0" disable_linking="0">
+                <field name="create_date"/>
+                <field name="event_type"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="website_tracking_log_view_pivot" model="ir.ui.view">
+        <field name="name">website.tracking.log.view.pivot</field>
+        <field name="model">website.tracking.log</field>
+        <field name="arch" type="xml">
+            <pivot disable_linking="0" display_quantity="True" sample="1">
+                <field name="create_date" interval="day" type="col" />
+                <field name="event_type" type="row"/>
+<!--                <field name="nbr" type="measure"/>-->
+            </pivot>
+        </field>
+    </record>
+
+    <record id="action_tracking_log_list" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Tracking Logs</field>
+        <field name="res_model">website.tracking.log</field>
+        <field name="view_mode">graph,pivot,tree,form</field>
+        <field name="context">{'search_default_filter_date': 1, 'search_default_group_by_create_date': 1, 'search_default_group_by_event_type': 1}</field>
+    </record>
+
+    <menuitem id="website_tracking_logs_menu"
+              name="Logs"
+              parent="website_tracking_menu"
+              action="action_tracking_log_list"
+              sequence="20"/>
+    
+</odoo>

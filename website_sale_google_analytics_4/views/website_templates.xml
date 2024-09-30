@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="layout" name="Website Sale GA4" inherit_id="website_google_analytics_4.layout">
+        <xpath expr="//t[@name='ga4_script']" position="attributes">
+            <attribute name="t-if">website and website.tracking_is_active and website.ga4_get_primary_key() and not editable</attribute>
+        </xpath>
+    </template>
+
+</odoo>
