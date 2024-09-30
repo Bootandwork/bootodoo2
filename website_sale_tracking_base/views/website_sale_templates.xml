@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <template id="layout" name="Tracker Logging Script" inherit_id="website.layout">
+        <xpath expr="//body" position="attributes">
+            <attribute name="t-att">{'data-log-tracking-events': website.tracking_is_active and website.tracking_is_logged}</attribute>
+        </xpath>
+    </template>
+
+    <!-- add products.ids to js -->
+    <template id="tracking_add_product_ids" name="Tracking Product List" inherit_id="website_sale.products">
+        <xpath expr="//div[@id='products_grid']" position="attributes">
+            <attribute name="t-att-data-tracking_product_tmpl_ids">products.ids</attribute>
+        </xpath>
+    </template>
+    <!-- add search term to js -->
+    <template id="tracking_add_search_term" name="Tracking Product Search" inherit_id="website_sale.products">
+        <xpath expr="//div[@id='products_grid']" position="attributes">
+            <attribute name="t-att-data-tracking_search_term">search</attribute>
+            <attribute name="t-att-data-tracking_category">category and category.id or 0</attribute>
+        </xpath>
+    </template>
+
+    <!-- add product_template_id input-->
+    <!--  15.0  -->
+    <!-- Pass product template ID to one product list item -->
+    <template id="tracking_add_product_template_id" inherit_id="website_sale.products_item">
+        <xpath expr="//div[hasclass('o_wsale_product_btn')]" position="inside">
+            <t t-set="product_template_id" t-value="product.id"/>
+            <input name="product_template_id" t-att-value="product_template_id" type="hidden"/>
+        </xpath>
+    </template>
+
+</odoo>

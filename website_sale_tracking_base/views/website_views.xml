@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="action_current_website_tracking_service_list" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Tracking Services</field>
+        <field name="res_model">website.tracking.service</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('website_id', '=', active_id)]</field>
+        <field name="context">{'default_website_id': active_id, 'active_test': False}</field>
+    </record>
+
+    <record id="view_website_form" model="ir.ui.view">
+        <field name="name">model.name.inherit.website_sale_tracking_base</field>
+        <field name="model">website</field>
+        <field name="inherit_id" ref="website.view_website_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//sheet/group" position="before">
+                <div class="oe_button_box" name="button_box">
+                    <button name="%(action_current_website_tracking_service_list)d"
+                            type="action"
+                            class="oe_stat_button"
+                            icon="fa-podcast"
+                            string="Tracking Services"/>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <menuitem id="website_tracking_menu"
+              name="Tracking"
+              sequence="100"
+              parent="website.menu_website_global_configuration"/>
+
+</odoo>

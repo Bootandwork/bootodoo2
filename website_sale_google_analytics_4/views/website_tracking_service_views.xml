@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="website_tracking_service_view_form" model="ir.ui.view">
+        <field name="name">website.tracking.service.view.form.inherit.website_sale_google_analytics_4</field>
+        <field name="model">website.tracking.service</field>
+        <field name="inherit_id" ref="website_sale_tracking_base.website_tracking_service_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//page[@name='options']/group" position="inside">
+                <group string="Google Analytics 4" name="ga4_options" attrs="{'invisible': [('type', '!=', 'ga4')]}">
+                    <field name="ga4_debug_mode" widget="boolean_toggle"/>
+                    <field name="ga4_lead_value"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="website_tracking_service_view_tree" model="ir.ui.view">
+        <field name="name">website.tracking.service.view.tree.inherit.website_sale_google_analytics_4</field>
+        <field name="model">website.tracking.service</field>
+        <field name="inherit_id" ref="website_sale_tracking_base.website_tracking_service_view_tree"/>
+        <field name="arch" type="xml">
+            <field name="key" position="after">
+                <field name="ga4_debug_mode" attrs="{'invisible': [('type', '!=', 'ga4')]}" optional="show"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

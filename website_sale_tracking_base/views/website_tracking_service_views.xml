@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="action_tracking_service_logs" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Tracking Logs</field>
+        <field name="res_model">website.tracking.log</field>
+        <field name="view_mode">tree,graph,pivot,form</field>
+        <field name="context">{'default_service_id': active_id}</field>
+        <field name="domain">[('service_id', '=', active_id)]</field>
+    </record>
+
+    <record id="website_tracking_service_view_form" model="ir.ui.view">
+        <field name="name">website.tracking.service.view.form</field>
+        <field name="model">website.tracking.service</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="%(action_tracking_service_logs)d"
+                                type="action"
+                                class="oe_stat_button"
+                                icon="fa-bar-chart"
+                                string="Logs"/>
+                    </div>
+                    <field name="active" invisible="1"/>
+                    <field name="show_lead_value" invisible="1"/>
+                    <widget name="web_ribbon" text="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}" />
+                    <div class="oe_title">
+                        <h3><field name="display_name"/></h3>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="website_id" groups="website.group_multi_website"/>
+                            <field name="type" required="1"/>
+                            <field name="key_is_required" invisible="1"/>
+                            <field name="key" attrs="{'required': [('type', '!=', 'odoo'), ('key_is_required', '=', True)], 'invisible': [('key_is_required', '=', False)]}"/>
+                        </group>
+                        <group>
+                            <field name="item_type"/>
+                            <field name="category_type"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Options" name="options">
+                            <group>
+                                <group string="Logging" name="logging">
+                                    <field name="is_internal_logged" widget="boolean_toggle"/>
+                                </group>
+                                <group string="Leads" attrs="{'invisible': [('show_lead_value', '=', False)]}">
+                                    <field name="lead_value"/>
+                                </group>
+                            </group>
+                        </page>
+                        <page string="Advanced Matching" name="user_data">
+                            <group string="Specify a customer data that should be sent">
+                                 <group>
+                                     <field name="track_id_external" string="External ID" widget="boolean_toggle"/>
+                                     <field name="track_ip_address" string="IP Address" widget="boolean_toggle"/>
+                                     <field name="track_user_agent" string="User Agent" widget="boolean_toggle"/>
+                                 </group>
+                                 <group>
+                                     <field name="track_email" string="Email" widget="boolean_toggle"/>
+                                     <field name="track_phone" string="Phone" widget="boolean_toggle"/>
+                                     <field name="track_country" string="Country" widget="boolean_toggle"/>
+                                     <field name="track_city" string="City" widget="boolean_toggle"/>
+                                 </group>
+                            </group>
+                            <separator string="Please visit the Privacy and Data Use Guide for the current service"  attrs="{'invisible': [('privacy_url', '=', False)]}"/>
+                            <field name="privacy_url" widget="url" attrs="{'invisible': [('privacy_url', '=', False)]}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="website_tracking_service_view_tree" model="ir.ui.view">
+        <field name="name">website.tracking.service.view.tree</field>
+        <field name="model">website.tracking.service</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="not active">
+                <field name="sequence" widget="handle"/>
+                <field name="website_id" optional="show" groups="website.group_multi_website"/>
+                <field name="type"/>
+                <field name="key"/>
+                <field name="is_internal_logged" optional="show"/>
+                <button name="%(action_tracking_service_logs)d" type="action" icon="fa-bar-chart" string="" title="Show Logs"/>
+                <field name="item_type" optional="hide"/>
+                <field name="category_type" optional="hide"/>
+                <field name="active" widget="boolean_toggle"/>
+            </tree>
+        </field>
+    </record>
+    
+    <record id="website_tracking_service_view_search" model="ir.ui.view">
+        <field name="name">website.tracking.service.view.search</field>
+        <field name="model">website.tracking.service</field>
+        <field name="arch" type="xml">
+            <search>
+                <filter name="filter_is_internal_logged" string="With Internal Logging" domain="[('is_internal_logged', '=', True)]"/>
+                <separator/>
+                <filter string="Archived" name="archived" domain="[('active', '=', False)]"/>
+                <group expand="0">
+                    <filter name="group_by_type" domain="[]" context="{'group_by': 'type'}"/>
+                    <filter name="group_by_website" domain="[]" context="{'group_by': 'website_id'}" groups="website.group_multi_website"/>
+                </group>
+                <searchpanel view_types="list,graph">
+                    <field name="type" string="Type" select="multi" icon="fa-bar-chart" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <record id="action_tracking_service_list" model="ir.actions.act_window">
+        <field name="type">ir.actions.act_window</field>
+        <field name="name">Tracking Services</field>
+        <field name="res_model">website.tracking.service</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">{'active_test': False}</field>
+    </record>
+
+    <menuitem id="website_tracking_service_menu"
+              name="Services"
+              parent="website_tracking_menu"
+              action="action_tracking_service_list"
+              sequence="10"/>
+
+</odoo>

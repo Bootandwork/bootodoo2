@@ -1,0 +1,4 @@
+id,name,model_id/id,group_id/id,perm_read,perm_write,perm_create,perm_unlink
+access_website_tracking_service_user_read,access_website_tracking_service_user_read,model_website_tracking_service,base.group_user,1,0,0,0
+access_website_tracking_service_admin,access_website_tracking_service_admin,model_website_tracking_service,website.group_website_designer,1,1,1,1
+access_website_tracking_log_user_read,access_website_tracking_log_user_read,model_website_tracking_log,base.group_user,1,0,0,0

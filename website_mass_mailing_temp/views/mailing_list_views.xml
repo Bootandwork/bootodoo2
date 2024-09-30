@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <record id="mailing_list_view_form_temp" model="ir.ui.view">
+            <field name="name">mailing.list.form.temp</field>
+            <field name="model">mailing.list</field>
+            <field name="inherit_id" ref="mass_mailing.mailing_list_view_form"/>
+            <field eval="8" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="is_public" position="after">
+                    <field name="use_by_default" attrs="{'invisible': [('is_public', '=', False)]}"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</odoo>
