@@ -10,7 +10,7 @@
                 <field name="ip_validate_control" invisible="True"/>
             </xpath>
             <xpath expr="//header/button[3]" position="replace">
-                <button name="button_validate" attrs="{'invisible': ['&amp;'('ip_validate_control', '=', False), ('state', 'in', ('waiting', 'confirmed))]}" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="v"/>
+                <button name="button_validate" attrs="{'invisible': ['&amp;', ('ip_validate_control', '=', False), ('state', 'in', ('waiting', 'confirmed))]}" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="v"/>
             </xpath>
             <xpath expr="//header/button[4]" position="replace">
                 <button name="button_validate" attrs="{'invisible': ['&amp;', ('state', 'not in', ('waiting', 'confirmed')), ('ip_validate_control', '=', False)]}" string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate" data-hotkey="v"/>
