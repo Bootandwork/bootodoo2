@@ -6,7 +6,7 @@ class StockPicking(models.Model):
 
     ip_validate_control = fields.Boolean(string = "Validate Control", compute="_compute_ip_validate_control")
 
-    @api.depends('sale_id','picking_type_id.code','state')
+    @api.depends('picking_type_id.code','state')
     def _compute_ip_validate_control(self):
         for rec in self:
             if rec.sale_id:
