@@ -4,23 +4,26 @@
     <field name="inherit_id" ref="stock.view_picking_form"/>
     <field name="arch" type="xml">
         <data>
+            <!-- Ensure the ip_validate_control field is present but invisible -->
             <xpath expr="//header" position="inside">
                 <field name="ip_validate_control" invisible="True"/>
             </xpath>
             
+            <!-- Replace the third button with updated conditions -->
             <xpath expr="//header/button[3]" position="replace">
                 <button name="button_validate" 
-                        attrs="{'invisible': ['&amp;', ('state', 'in', ('waiting', 'confirmed')), ('ip_validate_control', '=', False)]}" 
+                        attrs="{'invisible': ['&', ('state', 'in', ('waiting', 'confirmed')), ('ip_validate_control', '=', False)]}" 
                         string="Validate" 
                         type="object" 
                         class="oe_highlight" 
                         groups="stock.group_stock_user" 
                         data-hotkey="v"/>
             </xpath>
-            
+
+            <!-- Replace the fourth button with updated conditions -->
             <xpath expr="//header/button[4]" position="replace">
                 <button name="button_validate" 
-                        attrs="{'invisible': ['&amp;', ('state', 'not in', ('waiting', 'confirmed')), ('ip_validate_control', '=', False)]}" 
+                        attrs="{'invisible': ['&', ('state', 'not in', ('waiting', 'confirmed')), ('ip_validate_control', '=', False)]}" 
                         string="Validate" 
                         type="object" 
                         groups="stock.group_stock_user" 
