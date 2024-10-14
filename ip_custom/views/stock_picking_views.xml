@@ -10,10 +10,10 @@
                 <field name="ip_validate_control" invisible="True"/>
             </xpath>
             <xpath expr="//header/button[3]" position="replace">
-                <button name="button_validate" attrs="{'invisible': ['|', ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False), '&amp;', ('ip_validate_control', '=', False), ('ip_validate_control', '!=', True)]}" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="v"/>
+                <button name="button_validate" attrs="{'invisible': ['&amp;', ('state', 'in', ('waiting','confirmed')), '&amp;', ('ip_validate_control', '=', False), ('ip_validate_control', '!=', True)]}" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="v"/>
             </xpath>
             <xpath expr="//header/button[4]" position="replace">
-                <button name="button_validate" attrs="{'invisible': ['|', ('state', 'not in', ('waiting', 'confirmed')), ('show_validate', '=', False), '&amp;', ('ip_validate_control', '=', False), ('ip_validate_control', '!=', True)]}" string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate" data-hotkey="v"/>
+                <button name="button_validate" attrs="{'invisible': ['&amp;', ('state', 'not in', ('waiting', 'confirmed')), '&amp;', ('ip_validate_control', '=', False), ('ip_validate_control', '!=', True)]}" string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate" data-hotkey="v"/>
             </xpath>
         </field>
     </record>
