@@ -4,11 +4,12 @@ class StockPicking(models.Model):
 
     _inherit = "stock.picking"
 
-    ip_validate_control = fields.Boolean(string = "Validate Control", compute="_compute_ip_validate_control")
+    ip_validate_control = fields.Boolean(string = "Validate Control", compute="_compute_ip_validate_control", store=True)
 
     @api.depends('picking_type_id.code','state','sale_id')
     def _compute_ip_validate_control(self):
         for rec in self:
+            rec.ip_validate_control = False
             if rec.sale_id:
                 if rec.sale_id.x_studio_shipping_allowd:
                     rec.ip_validate_control = True
