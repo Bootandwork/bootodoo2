@@ -6,6 +6,9 @@
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form"/>
         <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <field name="ip_validate_control" invisible="True"/>
+            </xpath>
             <xpath expr="//header/button[3]" position="replace">
                 <button name="button_validate" attrs="{'invisible': ['|', ('state', 'in', ('waiting','confirmed')), ('show_validate', '=', False), ('ip_validate_control', '=', False)]}" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="v"/>
             </xpath>
