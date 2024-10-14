@@ -7,7 +7,7 @@
     'company': 'IPGrup',
     'maintainer': 'Gerard - ggonzalez@ipgrup.com',
     'website': 'https://www.ipgrup.com',
-    'depends': ['stock', 'sale'],
+    'depends': ['stock', 'sale', 'sale_stock'],
     'data': [
         'views/stock_picking_views.xml',
     ],
