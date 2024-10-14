@@ -1,21 +1,35 @@
-<?xml version="1.0" encoding="utf-8"?>
-<odoo>
-
-    <record id="stock_view_picking_form_inherit" model="ir.ui.view">
-        <field name="name">stock.view.picking.form.inherit</field>
-        <field name="model">stock.picking</field>
-        <field name="inherit_id" ref="stock.view_picking_form"/>
-        <field name="arch" type="xml">
+<record id="stock_view_picking_form_inherit" model="ir.ui.view">
+    <field name="name">stock.view.picking.form.inherit</field>
+    <field name="model">stock.picking</field>
+    <field name="inherit_id" ref="stock.view_picking_form"/>
+    <field name="arch" type="xml">
+        <data>
+            <!-- Ensure the ip_validate_control field is present but invisible -->
             <xpath expr="//header" position="inside">
                 <field name="ip_validate_control" invisible="True"/>
             </xpath>
+            
+            <!-- First button with "and" condition on ip_validate_control and state -->
             <xpath expr="//header/button[3]" position="replace">
-                <button name="button_validate" attrs="{'invisible': ['&amp;', ('ip_validate_control', '=', False), ('state', 'in', ('waiting', 'confirmed))]}" string="Validate" type="object" class="oe_highlight" groups="stock.group_stock_user" data-hotkey="v"/>
+                <button name="button_validate" 
+                        attrs="{'invisible': ['&amp;', ('ip_validate_control', '=', False), ('state', 'in', ('waiting', 'confirmed'))]}" 
+                        string="Validate" 
+                        type="object" 
+                        class="oe_highlight" 
+                        groups="stock.group_stock_user" 
+                        data-hotkey="v"/>
             </xpath>
+            
+            <!-- Second button with "or" and "and" conditions -->
             <xpath expr="//header/button[4]" position="replace">
-                <button name="button_validate" attrs="{'invisible': ['&amp;', ('state', 'not in', ('waiting', 'confirmed')), ('ip_validate_control', '=', False)]}" string="Validate" type="object" groups="stock.group_stock_user" class="o_btn_validate" data-hotkey="v"/>
+                <button name="button_validate" 
+                        attrs="{'invisible': ['&amp;', ('state', 'not in', ('waiting', 'confirmed')), ('ip_validate_control', '=', False)]}" 
+                        string="Validate" 
+                        type="object" 
+                        groups="stock.group_stock_user" 
+                        class="o_btn_validate" 
+                        data-hotkey="v"/>
             </xpath>
-        </field>
-    </record>
-
-</odoo>
+        </data>
+    </field>
+</record>
