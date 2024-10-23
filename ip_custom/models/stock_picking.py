@@ -22,8 +22,8 @@ class StockPicking(models.Model):
                 # Otherwise, check if picking type is 'outgoing'
             else:
                 # If no sale order, check if picking type is 'outgoing'
-                if rec.picking_type_id.code == "outgoing" or rec.picking_type_id.code == "incoming":
-                    rec.ip_validate_control = True
+                # if rec.picking_type_id.code == "outgoing" or rec.picking_type_id.code == "incoming":
+                rec.ip_validate_control = True
 
-                else:
-                    rec.ip_validate_control = False
+                # else:
+                #     rec.ip_validate_control = False
